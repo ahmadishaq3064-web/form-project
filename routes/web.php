@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::post('user-data',[FormController::class,'add']);
 
 Route::get('user-data',[FormController::class,'index']);
+
+Route::fallback(function(){
+return "<h1>PAGE NOT FOUND</h1>";
+});
