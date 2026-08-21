@@ -33,14 +33,8 @@ class FormController extends Controller
         'salary' => $req->salary
         ]
     );
-
-
-    
-    if($user){
-    echo "<h1>Data Successfully added ..</h1>";
-    }else{
-        echo "<h1>Data not added</h1>";
-    }}
+    return redirect('user-data')->with('success', 'Data Added Successfully!');
+}
     
     public function index()
     {
@@ -54,7 +48,12 @@ class FormController extends Controller
     $more = $data['meta']['more'] ?? false;
     $offset += $limit;
     }while($more);
-    return view('user-data', compact('countries'));
+
+    $userdata = DB::table('users')->get();
+    return view('user-data',['countries' => $countries,'data' => $userdata]);
     }
+
     
+    
+
 }

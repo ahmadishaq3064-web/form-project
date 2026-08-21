@@ -67,3 +67,17 @@ background-color: rgb(63, 181, 255);
     display: flex;
     justify-content: space-between;
 }
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.table {
+    width: 70%;
+}
+.table-container h1{
+margin-top: 50px;
+}

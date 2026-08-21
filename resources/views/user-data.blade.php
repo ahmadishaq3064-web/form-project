@@ -8,9 +8,15 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <div class="heading">
-    <h1>Personal Info.</h1>
+    @if(session('success'))
+    <div id="successMessage" class="alert alert-success fade show position-fixed top-0 end-0 m-3" role="alert">
+    <strong>✓ Success!</strong> {{ session('success') }}
     </div>
+    @endif
+    <div class="heading">
+    <h1>Add Personal Info.</h1>
+    </div>
+    <div class="row">
     <div class="container">
     <form action="" method="post">
     @csrf
@@ -18,7 +24,7 @@
     <div class=input-one>
     <label>Name: </label>
     <br>
-    <input maxlength="15" minlength="3" "{{old('name')}}" class="form-control @error('name') is-invalid @enderror" onkeydown="return /[a-zA-Z ]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your name" name="name">
+    <input maxlength="20" minlength="3" "{{old('name')}}" class="form-control @error('name') is-invalid @enderror" onkeydown="return /[a-zA-Z ]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your name" name="name">
     <span class="text-danger">@error('name'){{$message}}@enderror</span>
     </div>
 
@@ -91,6 +97,39 @@
     </div>
     </form>
     </div>
+    </div>
+
+    <div class="table-container">
+        <h1>User Data</h1>
+        <table class="table">
+        <thead class="table-dark">
+        <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Country</th>
+        <th>Skills</th>
+        <th>Gender</th>
+        <th>Color</th>
+        <th>Salary</th>
+        </tr>
+        </thead>
+        @foreach ($data as $id => $user )
+        <tr>
+        <td>{{$user->id}}</td>
+        <td>{{$user->name}}</td>
+        <td>{{$user->email}}</td>
+        <td>{{$user->age}}</td>
+        <td>{{$user->country}}</td>
+        <td>{{$user->skills}}</td>
+        <td>{{$user->gender}}</td>
+        <td>{{$user->color}}</td>
+        <td>{{$user->salary}}</td>
+        </tr>
+        @endforeach
+        </table>
+    </div>
 
     <script>
     const slider = document.getElementById('range');
@@ -108,6 +147,19 @@
     alert("age should be less than 120");
     }
     });
+
+    setTimeout(function () {
+        let message = document.getElementById('successMessage');
+
+        if (message) {
+            message.classList.remove('show');
+
+            setTimeout(function () {
+                message.remove();
+            }, 500);
+        }
+    }, 3000);
+    
 </script>
 </body>
 </html>
