@@ -4,167 +4,208 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add User Data</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Your CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @if(session('success'))
-    <div id="overlay">
-    <div id="successmessage" class="alert alert-success fade show" role="alert">
-    <strong>✓ Success!</strong> {{ session('success') }}
-    <button id="okbutton" type="button" class="btn btn-success btn-sm ms-3">ok</button>
+    <!-- Success popup -->
+    <div id="overlay" style="display:none;">
+        <div id="successmessage" class="alert alert-success fade show" role="alert">
+            <strong>✓ Success!</strong> <span id="successtext"></span>
+            <button id="okbutton" type="button" class="btn btn-success btn-sm ms-3">OK</button>
+        </div>
     </div>
-    </div>
-    @endif
+    <!-- Page heading -->
     <div class="heading">
-    <h1>Add Personal Info.</h1>
+        <h1>Add Personal Info.</h1>
     </div>
+    <!-- Form section -->
     <div class="row">
-    <div class="container">
-    <form action="" method="post">
-    @csrf
-
-    <div class=input-one>
-    <label>Name: </label>
-    <br>
-    <input maxlength="20" minlength="3" "{{old('name')}}" class="form-control @error('name') is-invalid @enderror" onkeydown="return /[a-zA-Z ]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your name" name="name">
-    <span class="text-danger">@error('name'){{$message}}@enderror</span>
+        <div class="container">
+            <form id="userform" action="{{ url('user-data') }}" method="post">
+                @csrf
+                <!-- Name -->
+                <div class="input-one">
+                    <label>Name:</label>
+                    <br>
+                    <input maxlength="20" minlength="3" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" onkeydown="return /[a-zA-Z ]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your name" name="name">
+                    <span class="text-danger">@error('name'){{$message}}@enderror</span>
+                </div>
+                <!-- Email -->
+                <div class="input-two">
+                    <label>Email:</label>
+                    <br>
+                    <input class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" type="text" placeholder="enter your email" name="email">
+                    <span class="text-danger">@error('email'){{$message}}@enderror</span>
+                </div>
+                <!-- Age -->
+                <div class="input-three">
+                    <label>Age:</label>
+                    <br>
+                    <input id="age" maxlength="3" value="{{ old('age') }}" class="form-control @error('age') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your age" name="age">
+                    <span class="text-danger">@error('age'){{$message}}@enderror</span>
+                </div>
+                <!-- Country -->
+                <div class="input-four">
+                    <label>Country:</label>
+                    <br>
+                    <select name="country" class="form-control">
+                        <option value="">Select Country</option>
+                        @foreach ($countries as $country)
+                            @if (isset($country['names']['common']))
+                                <option value="{{ $country['names']['common'] }}">
+                                    {{ $country['names']['common'] }}
+                                </option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <span class="text-danger">@error('country'){{$message}}@enderror</span>
+                </div>
+                <!-- Skills -->
+                <div class="input-five">
+                    <label>Skills:</label>
+                    <br>
+                    <label>PHP </label>
+                    <input type="checkbox" {{ old('skills') == "php" ? 'checked' : '' }} name="skills[]" value="php">
+                    <label>Laravel </label>
+                    <input type="checkbox" {{ old('skills') == "laravel" ? 'checked' : '' }} name="skills[]" value="laravel">
+                    <label>MYSQL </label>
+                    <input type="checkbox" {{ old('skills') == "mysql" ? 'checked' : '' }} name="skills[]" value="mysql">
+                    <span class="text-danger"><br>@error('skills'){{$message}}@enderror</span>
+                </div>
+                <!-- Gender -->
+                <div class="input-six">
+                    <label>Gender:</label>
+                    <br>
+                    <label>Male </label>
+                    <input type="radio" {{ old('gender') == "male" ? 'checked' : '' }} name="gender" value="male">
+                    <label>Female </label>
+                    <input type="radio" {{ old('gender') == "female" ? 'checked' : '' }} name="gender" value="female">
+                    <span class="text-danger"><br>@error('gender'){{$message}}@enderror</span>
+                </div>
+                <!-- Favorite color -->
+                <div class="input-seven">
+                    <label>Select your favorite color:</label>
+                    <input class="form-control" value="{{ old('color', '#000000') }}" type="color" name="color">
+                </div>
+                <!-- Salary -->
+                <div class="input-eight">
+                    <label>What is your Salary expectations?</label>
+                    <br>
+                    <input type="range" value="{{ old('salary', 50000) }}" name="salary" class="slider" min="10000" max="100000" id="range">
+                    <div class="slider-values">
+                        <span>10000</span>
+                        <span id="rangevalue">{{ old('salary', 50000) }}</span>
+                        <span>100000</span>
+                    </div>
+                    <span class="text-danger"><br>@error('range'){{$message}}@enderror</span>
+                </div>
+                <!-- Submit button -->
+                <div class="input-nine">
+                    <input class="form-control" type="submit" name="submit" value="Save">
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class=input-two>
-    <label>Email: </label>
-    <br>
-    <input class="form-control" value="{{old('email')}}" @error('name') is-invalid @enderror" type="text" placeholder="enter your email" name="email">
-    <span class="text-danger">@error('email'){{$message}}@enderror</span>
-    </div>
-
-    <div class=input-three>
-    <label>Age: </label>
-    <br>
-    <input id="age" maxlength="3" value="{{old('age')}}" class="form-control @error('name') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your age" name="age">
-    <span class="text-danger">@error('age'){{$message}}@enderror</span>
-    </div>
-
-    <div class=input-four>
-    <label>Country: </label>
-    <br>
-    <select name="country" class="form-control">
-    <option value="">Select Country</option>
-    @foreach ($countries as $country)
-        @if (isset($country['names']['common']))
-            <option value="{{ $country['names']['common'] }}">
-                {{ $country['names']['common'] }}
-            </option>
-        @endif
-    @endforeach
-    </select>
-    <span class="text-danger">@error('country'){{$message}}@enderror</span>
-    </div>
-
-    <div class=input-five>
-    <label>Skills: </label>
-    <br>
-    <label>PHP </label> <input type="checkbox" {{old('skills')=="php"?'checked':''}} name="skills[]" value="php">
-    <label>Laravel </label> <input type="checkbox" {{old('skills')=="laravel"?'checked':''}} name="skills[]" value="laravel">
-    <label>MYSQL </label> <input type="checkbox" {{old('skills')=="mysql"?'checked':''}} name="skills[]" value="mysql">
-    <span class="text-danger"><br>@error('skills'){{$message}}@enderror</span>
-    </div>
-
-    <div class=input-six>
-    <label>Gender: </label>
-    <br>
-    <label>Male </label> <input type="radio" {{old('gender')=="male"?'checked':''}} name="gender" value="male">
-    <label>Female </label> <input type="radio" {{old('gender')=="female"?'checked':''}} name="gender" value="female">
-    <span class="text-danger"><br>@error('gender'){{$message}}@enderror</span>
-    </div>
-
-    <div class=input-seven>
-    <label>Select your favorite color: </label>
-    <input class="form-control" value="{{old('color')}}" type="color" name="color" value="#000000" >
-    </div>
-
-    <div class=input-eight>
-    <label>What is your Salary expectations?</label>
-    <br>
-    <input type="range" value="{{old('salary',50000)}}" name="salary" class="slider"  min="10000" max="100000" id="range">
-    <div class="slider-values">
-    <span>10000</span>
-    <span id="rangeValue">{{ old('salary', 50000) }}</span>
-    <span>100000</span>
-    </div>
-    <span class="text-danger"><br>@error('range'){{$message}}@enderror</span>
-    </div>
-    
-    <div class=input-nine>
-    <input class="form-control" type="submit" name="submit">
-    </div>
-    </form>
-    </div>
-    </div>
-
+    <!-- User table -->
     <div class="table-container">
         <h1>User Data</h1>
-        <table class="table">
-        <thead class="table-dark">
-        <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Age</th>
-        <th>Country</th>
-        <th>Skills</th>
-        <th>Gender</th>
-        <th>Color</th>
-        <th>Salary</th>
-        </tr>
-        </thead>
-        @foreach ($data as $id => $user )
-        <tr>
-        <td>{{$user->id}}</td>
-        <td>{{$user->name}}</td>
-        <td>{{$user->email}}</td>
-        <td>{{$user->age}}</td>
-        <td>{{$user->country}}</td>
-        <td>{{$user->skills}}</td>
-        <td>{{$user->gender}}</td>
-        <td>{{$user->color}}</td>
-        <td>{{$user->salary}}</td>
-        </tr>
-        @endforeach
+        <table class="table" id="usertable">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                    <th>Skills</th>
+                    <th>Gender</th>
+                    <th>Color</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Existing database records -->
+                @foreach ($data as $id => $user)
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->age }}</td>
+                        <td>{{ $user->country }}</td>
+                        <td>{{ $user->skills }}</td>
+                        <td>{{ $user->gender }}</td>
+                        <td>{{ $user->color }}</td>
+                        <td>{{ $user->salary }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
-
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-    const slider = document.getElementById('range');
-    const rangeValue = document.getElementById('rangeValue');
-
-    slider.addEventListener('input', function () {
-        rangeValue.textContent = this.value;
-    });
-
-    const age = document.getElementById('age');
-    age.addEventListener('input',function() {
-    let value = age.value;
-    if(value>120){
-    this.value=120;
-    alert("age should be less than 120");
-    }
-    });
-
-    
-    const message = document.getElementById('successmessage');
-    const overlay = document.getElementById('overlay');
-    const okbutton = document.getElementById('okbutton');
-    if(okbutton){
-    okbutton.addEventListener('click',function(){
-    message.remove();
-    overlay.remove();
-    });
-    };
-    
-
-        
-    
-</script>
+        // Update salary value when slider moves
+        const slider = document.getElementById('range');
+        const rangevalue = document.getElementById('rangevalue');
+        slider.addEventListener('input', function () {
+            rangevalue.textContent = this.value;
+        });
+        // Check age and prevent values greater than 120
+        const age = document.getElementById('age');
+        age.addEventListener('input', function() {
+            let value = age.value;
+            if (value > 120) {
+                this.value = 120;
+                alert("age should be less than 120");
+            }
+        });
+        // Handle form submission using jQuery AJAX
+        $(document).ready(function() {
+            $("#userform").submit(function(event) {
+                // Prevent normal page reload
+                event.preventDefault();
+                // Send form data to Laravel using AJAX
+                $.ajax({
+                    url: "{{ url('user-data') }}",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // Add the new record to the table
+                        $('#usertable tbody').append(`
+                            <tr>
+                                <td>${response.user.id}</td>
+                                <td>${response.user.name}</td>
+                                <td>${response.user.email}</td>
+                                <td>${response.user.age}</td>
+                                <td>${response.user.country}</td>
+                                <td>${response.user.skills}</td>
+                                <td>${response.user.gender}</td>
+                                <td>${response.user.color}</td>
+                                <td>${response.user.salary}</td>
+                            </tr>
+                        `);
+                        // Show success popup
+                        $("#successtext").text(response.message);
+                        $("#overlay").show();
+                        // Clear the form
+                        $("#userform")[0].reset();
+                        // Reset salary display
+                        $("#rangevalue").text("50000");
+                    },
+                    error: function() {
+                        // Show simple error message
+                        alert("Something went wrong. Please try again.");
+                    }
+                });
+            });
+            // Remove success popup when OK is clicked
+            $("#okbutton").click(function() {
+                $("#overlay").remove();
+            });
+        });
+    </script>
 </body>
 </html>
