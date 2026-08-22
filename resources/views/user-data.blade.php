@@ -9,8 +9,11 @@
 </head>
 <body>
     @if(session('success'))
-    <div id="successMessage" class="alert alert-success fade show position-fixed top-0 end-0 m-3" role="alert">
+    <div id="overlay">
+    <div id="successmessage" class="alert alert-success fade show" role="alert">
     <strong>✓ Success!</strong> {{ session('success') }}
+    <button id="okbutton" type="button" class="btn btn-success btn-sm ms-3">ok</button>
+    </div>
     </div>
     @endif
     <div class="heading">
@@ -148,17 +151,19 @@
     }
     });
 
-    setTimeout(function () {
-        let message = document.getElementById('successMessage');
+    
+    const message = document.getElementById('successmessage');
+    const overlay = document.getElementById('overlay');
+    const okbutton = document.getElementById('okbutton');
+    if(okbutton){
+    okbutton.addEventListener('click',function(){
+    message.remove();
+    overlay.remove();
+    });
+    };
+    
 
-        if (message) {
-            message.classList.remove('show');
-
-            setTimeout(function () {
-                message.remove();
-            }, 500);
-        }
-    }, 3000);
+        
     
 </script>
 </body>
