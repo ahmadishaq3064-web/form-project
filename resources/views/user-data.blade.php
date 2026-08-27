@@ -45,7 +45,7 @@
                 <div class="input-three">
                     <label>Age:</label>
                     <br>
-                    <input id="age" maxlength="3" value="{{ old('age') }}" class="form-control @error('age') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)" type="text" placeholder="enter your age" name="age">
+                    <input id="age" maxlength="3" value="{{ old('age') }}" class="form-control @error('age') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || (this.value && /[0-9]/.test(event.key)) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
                     <span class="text-danger">@error('age'){{$message}}@enderror</span>
                 </div>
                 <!-- Country -->
@@ -204,7 +204,7 @@
             });
             // Remove success popup when OK is clicked
             $("#okbutton").click(function() {
-                $("#overlay").remove();
+            $("#overlay").remove();
             });
         });
     </script>
