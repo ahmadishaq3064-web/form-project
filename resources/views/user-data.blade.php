@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add User Data</title>
+    <title>Add-User-Data</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- Your CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="icon" type="image/png" href="images.jpg">
+    <link rel="icon" type="image/png" href="logo.svg">
 </head>
 <body>
     <!-- Success popup -->
@@ -18,14 +18,20 @@
             <button id="okbutton" type="button" class="btn btn-success btn-sm ms-3">OK</button>
         </div>
     </div>
-    <!-- Page heading -->
-    <div class="heading">
-        <h1>Add Personal Info.</h1>
-    </div>
+    
     <!-- Form section -->
     <div class="row">
+        
         <div class="container">
+            <!-- Page heading -->
             <form id="userform" action="{{ url('user-data') }}" method="post">
+                
+                <div class="heading">
+                <h1>Add Personal Info.</h1>
+                <a href="{{ url('/') }}" class="btn btn-primary">View Records</a>
+                </div>
+
+                <hr>
                 @csrf
                 <!-- Name -->
                 <div class="input-one">
@@ -45,7 +51,7 @@
                 <div class="input-three">
                     <label>Age:</label>
                     <br>
-                    <input id="age" maxlength="3" value="{{ old('age') }}" class="form-control @error('age') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || (this.value && /[0-9]/.test(event.key)) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
+                    <input id="age" maxlength="3" value="{{ old('age') }}" name="age" class="form-control @error('age') is-invalid @enderror" onkeydown="return /[1-9]/.test(event.key) || (this.value && /[0-9]/.test(event.key)) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
                     <span class="text-danger">@error('age'){{$message}}@enderror</span>
                 </div>
                 <!-- Country -->
@@ -106,45 +112,13 @@
                 <!-- Submit button -->
                 <div class="input-nine">
                     <input class="form-control" type="submit" name="submit" value="Save">
+                    
                 </div>
+
             </form>
         </div>
     </div>
-    <!-- User table -->
-    <div class="table-container">
-        <h1>User Data</h1>
-        <table class="table" id="usertable">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                    <th>Country</th>
-                    <th>Skills</th>
-                    <th>Gender</th>
-                    <th>Color</th>
-                    <th>Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Existing database records -->
-                @foreach ($data as $id => $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->age }}</td>
-                        <td>{{ $user->country }}</td>
-                        <td>{{ $user->skills }}</td>
-                        <td>{{ $user->gender }}</td>
-                        <td>{{ $user->color }}</td>
-                        <td>{{ $user->salary }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
@@ -174,20 +148,6 @@
                     type: "POST",
                     data: $(this).serialize(),
                     success: function(response) {
-                        // Add the new record to the table
-                        $('#usertable tbody').append(`
-                            <tr>
-                                <td>${response.user.id}</td>
-                                <td>${response.user.name}</td>
-                                <td>${response.user.email}</td>
-                                <td>${response.user.age}</td>
-                                <td>${response.user.country}</td>
-                                <td>${response.user.skills}</td>
-                                <td>${response.user.gender}</td>
-                                <td>${response.user.color}</td>
-                                <td>${response.user.salary}</td>
-                            </tr>
-                        `);
                         // Show success popup
                         $("#successtext").text(response.message);
                         $("#overlay").show();

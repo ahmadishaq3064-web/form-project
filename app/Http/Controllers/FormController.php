@@ -20,7 +20,7 @@ class FormController extends Controller
             'salary' => 'required',
         ]);
         // Insert the new user into the database
-        $id = DB::table('users')->insertGetId([
+        $id = DB::table('users')->insert([
             'name' => $req->name,
             'email' => $req->email,
             'age' => $req->age,
@@ -30,15 +30,12 @@ class FormController extends Controller
             'color' => $req->color,
             'salary' => $req->salary
         ]);
-        // Get the newly inserted user from the database
-       $user = DB::table('users')->where('id',$id)->first();
        return response()->json([
         'success' => true,
         'message' => 'Data Added Successfully..',
-        'user' => $user
        ]);
     }
-    // Display the form, countries and existing users
+    // Display the form, countries
     public function index()
     {
         // Get countries from the API
@@ -56,12 +53,16 @@ class FormController extends Controller
             $more = $data['meta']['more'] ?? false;
             $offset += $limit;
         } while ($more);
-        // Get all existing users from the database
-        $userdata = DB::table('users')->get();
+        
         // Send countries and users to the Blade file
-        return view('user-data', [
-            'countries' => $countries,
-            'data' => $userdata
-        ]);
+        return view('user-data', ['countries' => $countries,]);
+        
     }
+
+    public function show(){
+    // Get all existing users from the database
+    $userdata = DB::table('users')->get();
+    return view('show-data', ['data' => $userdata,]);
+    }
+
 }

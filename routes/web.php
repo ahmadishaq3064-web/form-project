@@ -7,13 +7,12 @@ use App\Http\Controllers\FormController;
 |--------------------------------------------------------------------------
 | These routes handle displaying and submitting the user form.
 */
+
 // Display the user data page
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[FormController::class,'show']);
 // Receive the AJAX form submission
 Route::post('user-data', [FormController::class, 'add']);
-// Display the form and existing user records
+// Display the form
 Route::get('user-data', [FormController::class, 'index']);
 // Handle unknown URLs
 Route::fallback(function() {
