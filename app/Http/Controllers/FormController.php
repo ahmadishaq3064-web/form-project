@@ -62,7 +62,7 @@ class FormController extends Controller
     public function show(){
     // Get all existing users from the database
     $userdata = DB::table('users')->get();
-    return view('show-data', ['data' => $userdata,]);
+    return view('view-data', ['data' => $userdata,]);
     }
 
 }

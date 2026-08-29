@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add-User-Data</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- Your CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="icon" type="image/png" href="logo.svg">
-</head>
-<body>
-    <!-- Success popup -->
+@extends('layouts/mainlayout')
+
+@section("content")
+
+ <!-- Success popup -->
     <div id="overlay" style="display:none;">
         <div id="successmessage" class="alert alert-success fade show" role="alert">
             <strong>✓ Success!</strong> <span id="successtext"></span>
@@ -28,7 +19,6 @@
                 
                 <div class="heading">
                 <h1>Add Personal Info.</h1>
-                <a href="{{ url('/') }}" class="btn btn-primary">View Records</a>
                 </div>
 
                 <hr>
@@ -168,5 +158,10 @@
             });
         });
     </script>
-</body>
-</html>
+        
+
+@endsection
+
+
+
+   
