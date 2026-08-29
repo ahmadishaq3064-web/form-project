@@ -9,7 +9,7 @@ use App\Http\Controllers\FormController;
 */
 
 // Display the user data page
-Route::get('/',function(){return view("dashboard");});
+Route::get('/', [FormController::class, 'averageage']);
 // Receive the AJAX form submission
 Route::post('user-data', [FormController::class, 'add']);
 // Display the form

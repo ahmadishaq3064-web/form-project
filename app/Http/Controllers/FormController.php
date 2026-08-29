@@ -55,14 +55,22 @@ class FormController extends Controller
         } while ($more);
         
         // Send countries and users to the Blade file
-        return view('user-data', ['countries' => $countries,]);
+        return view('user-data', ['countries' => $countries]);
         
     }
 
     public function show(){
     // Get all existing users from the database
     $userdata = DB::table('users')->get();
-    return view('view-data', ['data' => $userdata,]);
+    return view('view-data', ['data' => $userdata]);
     }
 
+    public function averageage(){
+    // Get all existing users from the database
+    $averageage = DB::table('users')->avg('age');
+    $maleusers = DB::table('users')->where('gender', 'Male')->count();
+    $femaleusers = DB::table('users')->where('gender', 'Female')->count();
+    $totalusers = DB::table('users')->count('id');
+    return view('dashboard', ['averageage' => $averageage , 'maleusers' => $maleusers , 'femaleusers' => $femaleusers, 'totalusers'=> $totalusers ]);
+    }
 }
