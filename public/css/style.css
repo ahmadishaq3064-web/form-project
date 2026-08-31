@@ -10,7 +10,7 @@ box-sizing: border-box;
 
 body {
 font-family: Arial, sans-serif;
-background-color: #f3f5f9;
+background-color: white;
 color: #333;
 }
 
@@ -281,6 +281,8 @@ background-color: #f5f5f5;
 }
 
 
+
+
 /* ------------------------------
 Header
 ------------------------------ */
@@ -289,6 +291,10 @@ Header
 background-color: #1f2937;
 color: white;
 padding: 20px 30px;
+/* CHANGED: keep header visible while scrolling */
+position: sticky;
+top: 0;
+z-index: 100;
 }
 
 .header h2 {
@@ -316,9 +322,13 @@ Sidebar
 
 .sidebar {
 width: 220px;
-background-color: white;
 padding: 25px 15px;
-border-right: 1px solid #ddd;
+/* CHANGED: keep sidebar visible while scrolling, but stop before the footer */
+position: sticky;
+top: 123px; /* sits just below the sticky header (adjust if header height changes) */
+align-self: flex-start;
+z-index: 10;
+
 }
 
 .sidebar h3 {
@@ -342,6 +352,12 @@ border-radius: 6px;
 .nav-button:hover {
 background-color: #e2e6ea;
 }
+
+.active{
+background-color: #dcdcdc;
+border-bottom: 3px solid  #1f2937;
+}
+
 
 
 /* ------------------------------
@@ -403,14 +419,25 @@ Recent Users
 ------------------------------ */
 
 .recent-users {
+display: flex;
+justify-content: space-between;
 background-color: white;
 padding: 25px;
 border-radius: 10px;
 border: 1px solid #e5e7eb;
 }
 
-.recent-users h2 {
-margin-bottom: 10px;
+.recent-users form{
+    display: flex;
+}
+
+.recent-users form button {
+    background-color: #f1f3f5;
+ padding: 10px;
+}
+
+.recent-users form button:hover {
+background-color: #e2e6ea;
 }
 
 
@@ -458,6 +485,11 @@ Responsive Design
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #ddd;
+    /* CHANGED: sidebar stays visible while scrolling on mobile, with its own background */
+    position: sticky;
+    top: 115px;
+    background-color: white;
+    z-index: 10;
 }
 
 .sidebar h3 {
@@ -473,45 +505,8 @@ Responsive Design
     flex-direction: column;
 }
 
+
 .content {
     padding: 20px;
-}
-}
-
-
-/* ------------------------------
-Small Mobile Screens
------------------------------- */
-
-@media (max-width: 480px) {
-
-.container {
-    width: 96%;
-    padding: 20px 15px;
-}
-
-.heading h1 {
-    font-size: 22px;
-}
-
-.heading p {
-    font-size: 13px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.options {
-    flex-direction: column;
-    gap: 12px;
-}
-
-.color-input {
-    width: 70px;
-}
-
-#successmessage {
-    width: 92%;
 }
 }

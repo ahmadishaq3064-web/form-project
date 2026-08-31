@@ -1,5 +1,9 @@
 @extends('layouts/mainlayout')
 
+@section('title')
+Dashboard
+@endsection
+
 @section("content")
 <!-- Main Content -->
         

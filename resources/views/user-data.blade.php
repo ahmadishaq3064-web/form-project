@@ -1,5 +1,9 @@
 @extends('layouts/mainlayout')
 
+@section('title')
+Add-Users
+@endsection
+
 @section("content")
 
 <!-- Success popup -->
@@ -66,22 +70,20 @@
             </div>
 
             <!-- Country -->
-            <div class="input-four form-group">
+                <div class="input-four form-group">
                 <label>Country:</label>
 
                 <select name="country" class="form-control">
-                    <option value="">Select Country</option>
+                <option value="">Select Country</option>
 
-                    @foreach ($countries as $country)
-                        @if (isset($country['names']['common']))
-                            <option value="{{ $country['names']['common'] }}">
-                                {{ $country['names']['common'] }}
-                            </option>
-                        @endif
-                    @endforeach
+                @foreach ($countries as $country)
+                <option value="{{ $country['country'] }}">
+                {{ $country['country'] }}
+                </option>
+                @endforeach
+
                 </select>
-
-            </div>
+                </div>
 
             <!-- Skills -->
             <div class="input-five form-group">
@@ -249,7 +251,7 @@
 
         // Remove success popup when OK is clicked
         $("#okbutton").click(function() {
-            $("#overlay").remove();
+            $("#overlay").hide();
         });
 
     });

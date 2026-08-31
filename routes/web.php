@@ -14,8 +14,8 @@ Route::get('/', [FormController::class, 'averageage']);
 Route::post('user-data', [FormController::class, 'add']);
 // Display the form
 Route::get('user-data', [FormController::class, 'index']);
-// dashboard
-Route::get('view-data',[FormController::class,'show']);
+// search and show data
+Route::get('view-data',[FormController::class,'search']);
 // Handle unknown URLs
 Route::fallback(function() {
     return "<h1>PAGE NOT FOUND</h1>";

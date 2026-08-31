@@ -38,31 +38,10 @@ class FormController extends Controller
     // Display the form, countries
     public function index()
     {
-        // Get countries from the API
-        $countries = [];
-        $offset = 0;
-        $limit = 100;
-        do {
-            $response = Http::withToken(env('REST_COUNTRIES_API_KEY'))->get('https://api.restcountries.com/countries/v5', [
-                'limit' => $limit,
-                'offset' => $offset,
-                'response_fields' => 'names.common',
-            ]);
-            $data = $response->json('data');
-            $countries = array_merge($countries, $data['objects'] ?? []);
-            $more = $data['meta']['more'] ?? false;
-            $offset += $limit;
-        } while ($more);
-        
+        $response = Http::get('https://countriesnow.space/api/v0.1/countries');
+        $countries = $response->json('data');
         // Send countries and users to the Blade file
         return view('user-data', ['countries' => $countries]);
-        
-    }
-
-    public function show(){
-    // Get all existing users from the database
-    $userdata = DB::table('users')->get();
-    return view('view-data', ['data' => $userdata]);
     }
 
     public function averageage(){
@@ -72,5 +51,10 @@ class FormController extends Controller
     $femaleusers = DB::table('users')->where('gender', 'Female')->count();
     $totalusers = DB::table('users')->count('id');
     return view('dashboard', ['averageage' => $averageage , 'maleusers' => $maleusers , 'femaleusers' => $femaleusers, 'totalusers'=> $totalusers ]);
+    }
+
+    public function search(Request $request){
+    $searchdata = DB::table('users')->where('name','like',"%{$request->search}%")->paginate(5);
+    return view('view-data',['data' => $searchdata,'recentsearch' => $request->search ]);
     }
 }
