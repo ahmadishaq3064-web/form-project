@@ -9,8 +9,15 @@ View-Users
     <div class="recent-users">
             <h2>Users Complete Info.</h2>
             <form action="{{url('view-data')}}" method="get" id="searchform">
+            <button type="button" id="reset">reset</button>
+            <select name="sort" id="sort" class="form-control">
+            <option>Select Option</option>
+            <option value="asc">[A-Z] - ASC</option>
+            <option value="desc">[Z-A] - DESC</option>
+            </select>
+            <button type="submit">sort</button>
             <input type="text" class="form-control" placeholder="Search.." name="search" id="search" value="{{$recentsearch ?? "" }}">
-            <button id="search"><i class="bi bi-search"></i></button>
+            <button id="searchbtn"><i class="bi bi-search"></i></button>
             </form>
     </div>
 
@@ -68,7 +75,7 @@ View-Users
     // ajax for pagination
     $(".table-container").on('click','.pagination a',function(e){
     e.preventDefault();
-    // to get the link of pagination
+    // to get the current link of pagination
     let url = $(this).attr('href');
     $.ajax({
     url : url,
@@ -83,20 +90,52 @@ View-Users
     // ajax for search
     $("#searchform").submit(function(e){
     e.preventDefault();
-    // to get the action of action
-    let url = $(this).attr('action');
     // to get the enter value in search box
     let search = $("#search").val();
+    // to get the selected option of select tag
+    let sort = $("#sort").val();
+    let page;
+    // if we click on search , go to page 1 and show data there
+    if($(document.activeElement).attr("id") == "searchbtn"){
+    page = 1;
+    }else{
+    // if we using sort option on any page , stay on the current active page
+    page = $(".pagination .active span").text();
+    }
+    
     $.ajax({
-    url:url,
+    url:"{{url('view-data')}}",
     type:"GET",
     data:{
-    search:search
+    search:search,
+    sort:sort,
+    page:page
     },
     success:function(response){
     let newtable = $(response).find(".table-container").html();
     $(".table-container").html(newtable);    
-}
+    }   
+    })
+    })
+
+    // to reset search and sort value
+    $("#reset").click(function(e){
+    e.preventDefault();
+    // clear the inputs from the screen
+    $("#search").val("");
+    $("#sort").val("Select Option");
+    $.ajax({
+    url:"{{url('view-data')}}",
+    type:"GET",
+    data:{
+    search:"",
+    sort:"",
+    page:1
+    },
+    success:function(response){
+    let newtable = $(response).find(".table-container").html();
+    $(".table-container").html(newtable);
+    }
     })
     })
 

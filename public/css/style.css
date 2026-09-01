@@ -432,12 +432,16 @@ border: 1px solid #e5e7eb;
 }
 
 .recent-users form button {
-    background-color: #f1f3f5;
- padding: 10px;
+background-color: #f1f3f5;
+padding: 10px;
 }
 
 .recent-users form button:hover {
 background-color: #e2e6ea;
+}
+
+.recent-users .form-control{
+margin-left: 20px;
 }
 
 
@@ -509,4 +513,6 @@ Responsive Design
 .content {
     padding: 20px;
 }
+
+
 }

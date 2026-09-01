@@ -54,7 +54,17 @@ class FormController extends Controller
     }
 
     public function search(Request $request){
-    $searchdata = DB::table('users')->where('name','like',"%{$request->search}%")->paginate(5);
+    $searchdata = DB::table('users')->where('name','like',"%{$request->search}%")->paginate(3)->withQueryString();
+    // get the data from the current pagination page
+    $collection = $searchdata->getcollection();
+    if($request->sort == 'asc'){
+    $collection = $collection->sortBy('name');
+    }
+    if($request->sort == 'desc'){
+    $collection = $collection->sortByDesc('name');
+    }
+    // take the sorted data , put them back in pagination result , and reset their index values
+    $searchdata->setcollection($collection->values());
     return view('view-data',['data' => $searchdata,'recentsearch' => $request->search ]);
     }
 }
