@@ -60,8 +60,20 @@ class FormController extends Controller
     if($request->sort == 'asc'){
     $collection = $collection->sortBy('name');
     }
-    if($request->sort == 'desc'){
+    else if($request->sort == 'desc'){
     $collection = $collection->sortByDesc('name');
+    }
+    else if($request->sort == 'asc-email'){
+    $collection = $collection->sortBy('email');
+    }
+    else if($request->sort == 'desc-email'){
+    $collection = $collection->sortByDesc('email');
+    }
+    else if($request->sort == 'asc-age'){
+    $collection = $collection->sortBy('age');
+    }
+    else if($request->sort == 'desc-age'){
+    $collection = $collection->sortByDesc('age');
     }
     // take the sorted data , put them back in pagination result , and reset their index values
     $searchdata->setcollection($collection->values());

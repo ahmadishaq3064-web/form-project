@@ -12,8 +12,12 @@ View-Users
             <button type="button" id="reset">reset</button>
             <select name="sort" id="sort" class="form-control">
             <option>Select Option</option>
-            <option value="asc">[A-Z] - ASC</option>
-            <option value="desc">[Z-A] - DESC</option>
+            <option value="asc">Name - [A-Z] - ASC</option>
+            <option value="desc">Name - [Z-A] - DESC</option>
+            <option value="asc-email">Email - [A-Z] - ASC</option>
+            <option value="desc-email">Email - [Z-A] - DESC</option>
+            <option value="asc-age">Age - [1-120] - ASC</option>
+            <option value="desc-age">Age - [120-1] - DESC</option>
             </select>
             <button type="submit">sort</button>
             <input type="text" class="form-control" placeholder="Search.." name="search" id="search" value="{{$recentsearch ?? "" }}">
