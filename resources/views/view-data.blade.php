@@ -74,23 +74,40 @@ View-Users
 
 <script>
 
+    async function cachedata(url , successfunction){
+    // to create/open a cache box in cache storage 
+    let cachecreate = await caches.open('users-data');
+    // to check whether this url already exists in cachebox
+    let cachechecked = await cachecreate.match(url);
+    if(cachechecked){
+    // to get the html response from already stored url in cache storage
+    let response = await cachechecked.text();
+    successfunction(response);
+    }else{
+    $.ajax({url:url,
+        type:'GET',
+        success:async function (response) {
+        successfunction(response);
+        await cachecreate.put(url, new Response(response));
+        }    
+    })   
+    }
+    };
+
+
     $(document).ready(function(){
+
 
     // ajax for pagination
     $(".table-container").on('click','.pagination a',function(e){
     e.preventDefault();
     // to get the current link of pagination
     let url = $(this).attr('href');
-    $.ajax({
-    url : url,
-    type : "GET",
-    success : function(response){
+    cachedata(url, function(response){
     let newtable = $(response).find(".table-container").html();
     $(".table-container").html(newtable);
-    }
     })
     });
-
     // ajax for search
     $("#searchform").submit(function(e){
     e.preventDefault();
@@ -106,21 +123,17 @@ View-Users
     // if we using sort option on any page , stay on the current active page
     page = $(".pagination .active span").text();
     }
-    
-    $.ajax({
-    url:"{{url('view-data')}}",
-    type:"GET",
-    data:{
+    let url = "{{ url('view-data')}}" + "?" + $.param({
     search:search,
     sort:sort,
     page:page
-    },
-    success:function(response){
+    });
+    cachedata(url, function(response){
     let newtable = $(response).find(".table-container").html();
-    $(".table-container").html(newtable);    
-    }   
+    $(".table-container").html(newtable);
     })
     })
+
 
     // to reset search and sort value
     $("#reset").click(function(e){
@@ -128,18 +141,10 @@ View-Users
     // clear the inputs from the screen
     $("#search").val("");
     $("#sort").val("Select Option");
-    $.ajax({
-    url:"{{url('view-data')}}",
-    type:"GET",
-    data:{
-    search:"",
-    sort:"",
-    page:1
-    },
-    success:function(response){
+    let url = "{{ url('view-data')}}";
+    cachedata(url, function(response){
     let newtable = $(response).find(".table-container").html();
     $(".table-container").html(newtable);
-    }
     })
     })
 
