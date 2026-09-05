@@ -1,15 +1,21 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\login;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 | These routes handle displaying and submitting the user form.
 */
-
+// login page
+Route::get('/', function(){return view('login');});
+Route::post('/',[login::class,'login']);
+// registration page
+Route::get('registration', function(){return view('registration');});
+Route::post('registration',[login::class,'registration']);
 // Display the user data page
-Route::get('/', [FormController::class, 'averageage']);
+Route::get('dashboard', [FormController::class, 'averageage']);
 // Receive the AJAX form submission
 Route::post('user-data', [FormController::class, 'add']);
 // Display the form

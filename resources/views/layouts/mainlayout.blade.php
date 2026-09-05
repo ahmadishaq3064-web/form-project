@@ -25,7 +25,7 @@
 
         <!-- Navigation -->
         <nav class="sidebar">
-            <a href="{{ url('/') }}" class="nav-button {{ request()->is('/') ? 'active' : ' ' }}">Dashboard</a>
+            <a href="{{ url('dashboard') }}" class="nav-button {{ request()->is('dashboard') ? 'active' : ' ' }}">Dashboard</a>
             <a href="{{ url('user-data') }}" class="nav-button {{ request()->is('user-data') ? 'active' : ''}}">Add User</a>
             <a href="{{ url('view-data') }}" class="nav-button {{ request()->is('view-data') ? 'active' : ''}}">View Users</a>
         </nav>

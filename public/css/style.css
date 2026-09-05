@@ -228,7 +228,6 @@ background-color: #0b5ed7;
 }
 
 
-
 /* ------------------------------
 Success Overlay
 ------------------------------ */
@@ -281,8 +280,6 @@ background-color: #f5f5f5;
 }
 
 
-
-
 /* ------------------------------
 Header
 ------------------------------ */
@@ -291,7 +288,6 @@ Header
 background-color: #1f2937;
 color: white;
 padding: 20px 30px;
-/* CHANGED: keep header visible while scrolling */
 position: sticky;
 top: 0;
 z-index: 100;
@@ -323,12 +319,10 @@ Sidebar
 .sidebar {
 width: 220px;
 padding: 25px 15px;
-/* CHANGED: keep sidebar visible while scrolling, but stop before the footer */
 position: sticky;
-top: 123px; /* sits just below the sticky header (adjust if header height changes) */
+top: 123px;
 align-self: flex-start;
 z-index: 10;
-
 }
 
 .sidebar h3 {
@@ -353,11 +347,10 @@ border-radius: 6px;
 background-color: #e2e6ea;
 }
 
-.active{
+.active {
 background-color: #dcdcdc;
-border-bottom: 3px solid  #1f2937;
+border-bottom: 3px solid #1f2937;
 }
-
 
 
 /* ------------------------------
@@ -427,8 +420,8 @@ border-radius: 10px;
 border: 1px solid #e5e7eb;
 }
 
-.recent-users form{
-    display: flex;
+.recent-users form {
+display: flex;
 }
 
 .recent-users form button {
@@ -440,7 +433,7 @@ padding: 10px;
 background-color: #e2e6ea;
 }
 
-.recent-users .form-control{
+.recent-users .form-control {
 margin-left: 20px;
 }
 
@@ -489,7 +482,6 @@ Responsive Design
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #ddd;
-    /* CHANGED: sidebar stays visible while scrolling on mobile, with its own background */
     position: sticky;
     top: 115px;
     background-color: white;
@@ -509,10 +501,229 @@ Responsive Design
     flex-direction: column;
 }
 
-
 .content {
     padding: 20px;
 }
 
+}
+
+
+/* ------------------------------
+Login & Registration Pages
+------------------------------ */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #dcdcdc;
+    padding: 30px 15px;
+}
+
+
+/* NEW: Holds message and login card */
+
+.auth-content {
+    width: 90%;
+    max-width: 450px;
+}
+
+
+/* ------------------------------
+Login Card
+------------------------------ */
+
+.auth-card {
+    width: 100%;
+    background-color: white;
+    padding: 35px 45px;
+    border-radius: 14px;
+    border: 1px solid #e2e5ea;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+.auth-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.auth-heading h1 {
+    font-size: 30px;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+
+.auth-heading p {
+    color: #777;
+    font-size: 15px;
+}
+
+
+.auth-card hr {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin-bottom: 30px;
+}
+
+
+.auth-card .form-group {
+    margin-bottom: 22px;
+}
+
+
+.auth-card .form-group label {
+    display: block;
+    font-weight: bold;
+    color: #030303;
+    margin-bottom: 8px;
+}
+
+
+.auth-card .form-control {
+    width: 100%;
+    min-height: 45px;
+    border: 1px solid #747575;
+    border-radius: 7px;
+    padding: 10px 13px;
+    font-size: 15px;
+    background-color: #fff;
+    box-shadow: none;
+    margin: 0;
+}
+
+
+.auth-card .form-control:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+}
+
+
+.auth-card .form-control::placeholder {
+    color: #7c7f86;
+}
+
+
+#show-password {
+margin-top: 10px;
+}
+
+
+/* ------------------------------
+Success Message
+------------------------------ */
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 13px;
+
+    animation: hideMessage 3s forwards;
+}
+
+
+@keyframes hideMessage {
+
+    0% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* ------------------------------
+Authentication Button
+------------------------------ */
+
+.auth-button {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.auth-button button.form-control {
+    width: 100%;
+    min-height: 45px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.auth-button button.form-control:hover {
+    background-color: #0b5ed7;
+}
+
+
+/* ------------------------------
+Authentication Footer
+------------------------------ */
+
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+}
+
+
+.auth-footer p {
+    color: #777;
+    font-size: 14px;
+}
+
+
+.auth-footer a {
+    color: #0d6efd;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* ------------------------------
+Authentication Responsive Design
+------------------------------ */
+
+@media (max-width: 768px) {
+
+    .auth-container {
+        padding: 20px 10px;
+    }
+
+    .auth-content {
+        width: 94%;
+    }
+
+    .auth-card {
+        width: 100%;
+        padding: 25px 20px;
+    }
+
+    .auth-heading h1 {
+        font-size: 25px;
+    }
 
 }
