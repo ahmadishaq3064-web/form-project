@@ -226,8 +226,9 @@ Add-Users
 
                 data: $(this).serialize(),
 
-                success: function(response) {
-
+                success: async function(response) {
+                    // Delete old cached user data
+                    await caches.delete('users-data');
                     // Show success popup
                     $("#successtext").text(response.message);
 

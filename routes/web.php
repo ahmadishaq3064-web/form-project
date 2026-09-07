@@ -8,12 +8,15 @@ use App\Http\Controllers\login;
 |--------------------------------------------------------------------------
 | These routes handle displaying and submitting the user form.
 */
-// login page
-Route::get('/', function(){return view('login');});
-Route::post('/',[login::class,'login']);
+
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
+// login page
+Route::get('/', function(){return view('login');});
+Route::post('/',[login::class,'login']);
+// logout
+Route::get('logout',[login::class,'logout']);
 // Display the user data page
 Route::get('dashboard', [FormController::class, 'averageage']);
 // Receive the AJAX form submission

@@ -62,7 +62,7 @@
                     <input type="checkbox" onclick="showpassword()"><span> Show Password</span>
                     </div>
                     @error('password')
-                    <span class = "text-danger"><small>Your password must contain at least 8 characters, including one uppercase letter, one number, and one special character.</small></span>
+                    <span class = "text-danger"><small>{{ $message }}</small></span>
                     @enderror
                 </div>
 

@@ -6,7 +6,8 @@ Dashboard
 
 @section("content")
 <!-- Main Content -->
-        
+            <h1>Welcome - {{Auth::user()->name}}</h1>
+            <hr style="border: 2px solid rgb(1, 1, 1);">
             <h1>Dashboard</h1>
             <p class="welcome">Welcome to the user management dashboard.</p>
 

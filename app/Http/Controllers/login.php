@@ -35,17 +35,17 @@ class login extends Controller
     'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     ]);
-    
+
     if(Auth::attempt($credentials)){
     return redirect("dashboard");
+    }else {
+    // withInput() hamesha back ky sath hee use ho sakta hai
+    return redirect("/")->withErrors(['password' => 'The email or password is incorrect.'])->withInput();
     }
     }
 
-    public function dashboardpage(){
-    if(Auth::check()){
-    return view("dashboard");
-    }else{
-    return view("login");
-    }
+    public function logout(){
+    Auth::logout();
+    return redirect('/');
     }
 }
