@@ -21,7 +21,7 @@ Route::get('logout',[login::class,'logout']);
 
 
 
-Route::middleware([validuser::class])->group(function(){
+Route::middleware('isuservalid')->group(function(){
 
 // Display the user data page
 Route::get('dashboard', [FormController::class, 'averageage']);
