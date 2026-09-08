@@ -108,6 +108,8 @@ View-Users
     $(".table-container").html(newtable);
     })
     });
+
+    
     // ajax for search
     $("#searchform").submit(function(e){
     e.preventDefault();

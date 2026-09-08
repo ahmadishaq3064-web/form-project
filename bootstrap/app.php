@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Middleware\validuser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;

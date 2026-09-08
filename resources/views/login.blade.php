@@ -24,7 +24,7 @@
 
             <div class="auth-card">
                 <div class="auth-heading">
-                <h1>Welcome Back</h1>
+                <h1>Welcome</h1>
                 <p>Login to your account</p>
                 </div>
 

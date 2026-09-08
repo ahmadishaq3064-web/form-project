@@ -4,21 +4,23 @@ use App\Http\Controllers\login;
 use App\Http\Middleware\validuser;
 use Illuminate\Support\Facades\Route;
 /*
+
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 | These routes handle displaying and submitting the user form.
 */
 
+
+Route::middleware('guest')->group(function(){
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
 // login page
 Route::get('/', function(){return view('login');});
 Route::post('/',[login::class,'login']);
-// logout
-Route::get('logout',[login::class,'logout']);
 
+});
 
 
 Route::middleware('isuservalid')->group(function(){
@@ -31,7 +33,8 @@ Route::post('user-data', [FormController::class, 'add']);
 Route::get('user-data', [FormController::class, 'index']);
 // search and show data
 Route::get('view-data',[FormController::class,'search']);
-
+// logout
+Route::post('logout',[login::class,'logout']);
 });
 
 
