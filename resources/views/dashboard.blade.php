@@ -44,6 +44,15 @@ Dashboard
 
             </div>
 
+<script>
+
+    // session storage
+    sessionStorage.setItem("name","{{Auth::user()->name}}");
+    sessionStorage.setItem("username","{{Auth::user()->email}}");
+    sessionStorage.setItem("phone","{{Auth::user()->phone_number}}");
+
+</script>
+
         
 
 @endsection

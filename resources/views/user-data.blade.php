@@ -208,6 +208,21 @@ Add-Users
         }
     });
 
+    // saved data in indexeddb if there is no internet
+    let db;
+    // to create/open a table in indexedDB
+    let request = indexedDB.open("offlinedata",1);
+    request.onupgradeneeded = function(event) {
+    // the indexedDB is now store in db variable
+    db = event.target.result;
+    // create a object store = table called id ..
+    db.createObjectStore("offlinedata",{keyPath:"id",autoncrement:true});
+    }
+    // it runs when indexed database opens successfully
+    request.onsuccess = function(event){
+    db = event.target.result;
+    syncfunction();
+    }
 
     // Handle form submission using jQuery AJAX
     $(document).ready(function() {
@@ -217,6 +232,8 @@ Add-Users
             // Prevent normal page reload
             event.preventDefault();
 
+            let formdata = $(this).serialize();
+
             // Send form data to Laravel using AJAX
             $.ajax({
 
@@ -224,7 +241,7 @@ Add-Users
 
                 type: "POST",
 
-                data: $(this).serialize(),
+                data: formdata,
 
                 success: async function(response) {
                     // Delete old cached user data
@@ -241,10 +258,17 @@ Add-Users
                     $("#rangevalue").text("50000");
                 },
 
-                error: function() {
-
+                error: function(xhr) {
+                    // when the browser couldn't connect to the server. 
+                    if(xhr.status === 0){
+                    // Save data temporarily in IndexedDB when internet is unavailable
+                    // In IndexedDB, a transaction is used to perform operations on an object store.
+                    db.transaction("offlinedata","readwrite").objectStore("offlinedata").add({data:formdata});
+                    alert("Internet is off. Data saved temporarily.");
+                    }else{
                     // Show simple error message
                     alert("Something went wrong. Please try again.");
+                    }   
                 }
             });
         });

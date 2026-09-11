@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="auth-button">
-                <button type="submit" class="form-control">
+                <button type="submit" class="form-control" id="loginbutton">
                 Login
                 </button>
                 </div>
@@ -88,6 +88,7 @@
     </div>
 
     <script>
+    // show password using checkbox
     function showpassword(){
     var password = document.getElementById('password');
     if(password.type === "password"){
@@ -96,6 +97,8 @@
     password.type = "password";
     }
     }
+    
+
     </script>
 </body>
 </html>

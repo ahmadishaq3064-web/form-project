@@ -509,6 +509,11 @@ Responsive Design
     margin-right: 8px;
 }
 
+.recent-users{
+ display: inline-block;
+ margin-right: 8px;
+}
+
 #logout{
     width: 15%;
     display: inline-block;

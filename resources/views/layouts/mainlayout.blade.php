@@ -31,7 +31,7 @@
             <hr style="border: 2px solid rgb(1, 1, 1);">
             <form action="{{ url('logout') }}" method="POST">
             @csrf
-            <button type="submit" id="logout">Logout</button>
+            <button type="submit" id="logout" onclick="clearsession()">Logout</button>
             </form>
         </nav>
 
@@ -46,6 +46,12 @@
     <footer class="footer">
         <p>© 2026 User Dashboard. All Rights Reserved.</p>
     </footer>
+
+    <script>
+    function clearsession(){
+    sessionStorage.clear();
+    }
+    </script>
 
 </body>
 </html>

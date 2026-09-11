@@ -1,7 +1,6 @@
 <?php
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\login;
-use App\Http\Middleware\validuser;
 use Illuminate\Support\Facades\Route;
 /*
 

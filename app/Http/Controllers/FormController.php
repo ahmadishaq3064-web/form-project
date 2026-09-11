@@ -55,7 +55,7 @@ class FormController extends Controller
 
     public function search(Request $request){
     // withQueryString() is liye use hota hai , jab b hum search kr ky pagination py click kren to ye search ky heesab sy page badly .. na ky pury user dobara show krny lag jay ..
-    $searchdata = DB::table('users')->where('name','like',"%{$request->search}%")->paginate(3)->withQueryString();
+    $searchdata = DB::table('users')->where('name','like',"%{$request->search}%")->paginate(5)->withQueryString();
     // get the data from the current pagination page
     $collection = $searchdata->getcollection();
     if($request->sort == 'asc'){
