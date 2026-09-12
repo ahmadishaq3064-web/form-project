@@ -36,12 +36,15 @@ class FormController extends Controller
        ]);
     }
     // Display the form, countries
-    public function index()
+    public function countries()
     {
         $response = Http::get('https://countriesnow.space/api/v0.1/countries');
+        return response()->json($response->json("data"));
+
+        /* ye hum tab use krein gay jab directly laravel external api use kr rha ho
         $countries = $response->json('data');
         // Send countries and users to the Blade file
-        return view('user-data', ['countries' => $countries]);
+        return view('user-data', ['countries' => $countries]); */
     }
 
     public function averageage(){

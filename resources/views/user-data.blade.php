@@ -72,15 +72,15 @@ Add-Users
             <!-- Country -->
                 <div class="input-four form-group">
                 <label>Country:</label>
-
-                <select name="country" class="form-control">
+                <select name="country" class="form-control" id="country">
                 <option value="">Select Country</option>
 
-                @foreach ($countries as $country)
+                {{-- ye hum tab use krein gay jab directly laravel external api use kr rha ho --}}
+                {{-- @foreach ($countries as $country)
                 <option value="{{ $country['country'] }}">
                 {{ $country['country'] }}
                 </option>
-                @endforeach
+                @endforeach --}}
 
                 </select>
                 </div>
@@ -208,20 +208,45 @@ Add-Users
         }
     });
 
-    // saved data in indexeddb if there is no internet
-    let db;
-    // to create/open a table in indexedDB
-    let request = indexedDB.open("offlinedata",1);
-    request.onupgradeneeded = function(event) {
-    // the indexedDB is now store in db variable
-    db = event.target.result;
-    // create a object store = table called id ..
-    db.createObjectStore("offlinedata",{keyPath:"id",autoncrement:true});
+    storecountries("{{url('countries')}}");
+
+    // Create an async function to get and cache the countries
+    async function storecountries(url){
+    // Open or create the "store-countries" cache
+    let cacheopen = await caches.open("store-countries");
+    // Check if the URL already exists in the cache
+    let cachechecked = await cacheopen.match(url);
+    // If the URL is found in the cache
+    if(cachechecked){
+    // Read the cached response as JSON
+    let response = await cachechecked.json();
+    // Show the cached countries in the dropdown
+    showcountries(response);
+    // If the URL is not found in the cache
     }
-    // it runs when indexed database opens successfully
-    request.onsuccess = function(event){
-    db = event.target.result;
-    syncfunction();
+    $.ajax({
+    url:url,
+    type:'GET',
+    // Run this function when the request is successful
+    success:async function (response) {
+    // Show the countries received from Laravel
+    showcountries(response);
+    // Store the API response in Cache Storage
+    await cacheopen.put(url , new Response(JSON.stringify(response)));
+    }
+    })
+    }
+    // Create a function to display countries in the dropdown
+    function showcountries(countries){
+    // Select the country dropdown
+    let dropdown = $("#country");
+    // Add the default option to the dropdown
+    dropdown.html('<option value="">Select Country</option>');
+    // Go through each country one by one
+    countries.forEach(function(country){
+    // Add the current country to the dropdown
+    dropdown.append('<option value="' + country.country + '">' + country.country + '</option>');
+    });
     }
 
     // Handle form submission using jQuery AJAX
@@ -259,16 +284,8 @@ Add-Users
                 },
 
                 error: function(xhr) {
-                    // when the browser couldn't connect to the server. 
-                    if(xhr.status === 0){
-                    // Save data temporarily in IndexedDB when internet is unavailable
-                    // In IndexedDB, a transaction is used to perform operations on an object store.
-                    db.transaction("offlinedata","readwrite").objectStore("offlinedata").add({data:formdata});
-                    alert("Internet is off. Data saved temporarily.");
-                    }else{
                     // Show simple error message
-                    alert("Something went wrong. Please try again.");
-                    }   
+                    alert("Something went wrong. Please try again.");  
                 }
             });
         });
