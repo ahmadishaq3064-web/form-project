@@ -14,7 +14,7 @@
 
     <!-- Header -->
     <header class="header">
-        <h2>User Dashboard</h2>
+        <h2>UserFORM_</h2>
         <p>Manage your users easily</p>
     </header>
     
@@ -44,7 +44,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 User Dashboard. All Rights Reserved.</p>
+        <p>© 2026 UserFORM_. All Rights Reserved.</p>
     </footer>
 
     <script>

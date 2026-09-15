@@ -371,7 +371,7 @@ Add-Users
         // Remove success popup when OK is clicked
         $("#okbutton").click(function() {
             $("#overlay").hide();
-        });
+    });
 
     });
 

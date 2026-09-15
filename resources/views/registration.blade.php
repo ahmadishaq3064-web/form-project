@@ -134,7 +134,7 @@
             <div class="auth-footer">
                 <p>
                     Already have an account?
-                    <a href="{{ url('/') }}">Login</a>
+                    <a href="{{ url('login') }}">Login</a>
                 </p>
             </div>
 

@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('guest')->group(function(){
+// landing page
+Route::get('/',function(){return view('welcome');});
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
 // login page
-Route::get('/', function(){return view('login');});
-Route::post('/',[login::class,'login']);
+Route::get('login', function(){return view('login');});
+Route::post('login',[login::class,'login']);
 
 });
 

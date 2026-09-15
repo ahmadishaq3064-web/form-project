@@ -26,7 +26,7 @@ class login extends Controller
     ]);
 
     if($credentials){
-    return redirect('/')->with("success","Registration Successfull! You can login now.");
+    return redirect('login')->with("success","Registration Successfull! You can login now.");
     }
     }
 
@@ -40,12 +40,12 @@ class login extends Controller
     return redirect("dashboard");
     }else {
     // withInput() hamesha back ky sath hee use ho sakta hai
-    return redirect("/")->withErrors(['password' => 'The email or password is incorrect.'])->withInput();
+    return redirect("login")->withErrors(['password' => 'The email or password is incorrect.'])->withInput();
     }
     }
 
     public function logout(){
     Auth::logout();
-    return redirect('/');
+    return redirect('login');
     }
 }
