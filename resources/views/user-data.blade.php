@@ -249,6 +249,66 @@ Add-Users
     });
     }
 
+    // Create a variable to keep our IndexedDB database
+    let db;
+    // Open/create a database where we will temporarily store form data when offline
+    let request = indexedDB.open('offline-data',1);
+    // Create the storage box when the database is created for the first time
+    request.onupgradeneeded = function(event){
+    db = event.target.result;
+    // Create a storage box only if it does not already exist
+    if(!db.objectStoreNames.contains('offline-data')){
+    db.createObjectStore('offline-data',{
+    // Give each saved form data a unique ID
+    keyPath:'id',
+    // Automatically create IDs like 1, 2, 3...
+    autoIncrement:true
+    });
+    }
+    };
+    // When the database is ready, check if there is any offline data waiting to be sent
+    request.onsuccess = function(event){
+    db = event.target.result;
+    sendofflinedata();
+    };
+    // This function takes saved offline form data and tries to send it to Laravel
+    function sendofflinedata(){
+    // Open the saved offline data so we can read it
+    let transaction = db.transaction('offline-data','readonly');
+    let store = transaction.objectStore('offline-data');
+    // Start checking the saved data one by one
+    let request = store.openCursor();
+    request.onsuccess = function(event){
+    let cursor = event.target.result;
+    // If saved data is available, take the first saved form
+    if(cursor){
+    let id = cursor.key;
+    let formdata = cursor.value.data;
+    // Send the saved form data to Laravel
+    $.ajax({
+    url:"{{ url('user-data') }}",
+    type:"POST",
+    data:formdata,
+    // If Laravel successfully saves the data, remove it from IndexedDB
+    success:function(){
+    let transaction = db.transaction('offline-data','readwrite');
+    transaction.objectStore('offline-data').delete(id);
+    // Check if there is more offline data waiting to be sent
+    sendofflinedata();
+    },
+    // If sending fails, keep the data in IndexedDB and try again later
+    error:function(){
+    // Data stays safe in IndexedDB
+    }
+    });
+    }
+    }
+    }
+    // When the internet comes back, automatically try to send the saved offline data
+    window.addEventListener("online",function(){
+    sendofflinedata();
+    });
+
     // Handle form submission using jQuery AJAX
     $(document).ready(function() {
 
@@ -284,8 +344,25 @@ Add-Users
                 },
 
                 error: function(xhr) {
-                    // Show simple error message
-                    alert("Something went wrong. Please try again.");  
+                // Check if the internet is currently off
+                if(!navigator.onLine){
+                // Open our offline storage so we can save data in it
+                let transaction = db.transaction('offline-data','readwrite');
+                // Save the form data temporarily in IndexedDB
+                transaction.objectStore('offline-data').add({
+                data:formdata
+                });
+                // Tell the user that the data was saved temporarily
+                alert("Internet is off. Data saved temporarily.");
+                // Clear the form
+                    $("#userform")[0].reset();
+
+                    // Reset salary display
+                    $("#rangevalue").text("50000");
+                }else                    
+                    {// Show simple error message
+                    alert("Something went wrong. Please try again.");
+                }  
                 }
             });
         });
