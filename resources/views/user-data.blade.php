@@ -346,6 +346,8 @@ Add-Users
                 error: function(xhr) {
                 // Check if the internet is currently off
                 if(!navigator.onLine){
+                // Delete old cached user data
+                await caches.delete('users-data');
                 // Open our offline storage so we can save data in it
                 let transaction = db.transaction('offline-data','readwrite');
                 // Save the form data temporarily in IndexedDB

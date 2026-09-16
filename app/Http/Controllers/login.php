@@ -26,7 +26,7 @@ class login extends Controller
     ]);
 
     if($credentials){
-    return redirect('login')->with("success","Registration Successfull! You can login now.");
+    return redirect('company-info')->with("success","Registration Successfull! You can login now.");
     }
     }
 
