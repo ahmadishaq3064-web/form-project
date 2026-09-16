@@ -17,17 +17,18 @@ Route::get('/',function(){return view('welcome');});
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
-// company detail form
-Route::get('company-info',function(){return view('company-info');});
 // login page
 Route::get('login', function(){return view('login');});
 Route::post('login',[login::class,'login']);
-
 });
 
+Route::middleware('registrationcompleted')->group(function(){
+// company detail form
+Route::get('company-info',function(){return view('company-info');});
+Route::post('company-info',[login::class,'companyinfo']);
+});
 
 Route::middleware('isuservalid')->group(function(){
-
 // Display the user data page
 Route::get('dashboard', [FormController::class, 'averageage']);
 // Receive the AJAX form submission

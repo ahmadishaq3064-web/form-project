@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Middleware\registrationcompleted;
 use App\Http\Middleware\validuser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,9 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
         'isuservalid' => validuser::class,
+        'registrationcompleted' => registrationcompleted::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })
+    
     ->create();

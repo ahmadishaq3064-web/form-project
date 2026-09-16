@@ -18,15 +18,40 @@ class login extends Controller
     'password_confirmation' => 'required|same:password'
     ]);
 
-    $credentials = DB::table('credentials')->insert([
+    $credentials = DB::table('credentials')->insertGetId([
     'name' => $request->name,
     'email' => $request->email,
     'phone_number' => $request->phone,
     'password' => Hash::make($request->password),
     ]);
+    session(['registered_user_id'=>$credentials]);
 
     if($credentials){
-    return redirect('company-info')->with("success","Registration Successfull! You can login now.");
+    return redirect('company-info');
+    }
+    }
+
+    public function companyinfo(Request $request){
+    $request->validate([
+    'company'=>'required|regex:/^[a-zA-Z &#,.-]+$/|between:3,30',
+    'owner'=>'required|regex:/^[a-zA-Z ]+$/|between:3,20',
+    'phone'=>'required|regex:/^03[0-9]{9}$/',
+    'email'=>'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+    'address'=>'required|regex:/^[a-zA-Z #,.-]+$/|between:20,120'
+    ]);
+
+    $userid = session('registered_user_id');
+    $companyinfo = DB::table('company_info')->insert([
+    'company_name'=>$request->company,
+    'user_id'=>$userid,
+    'owner_name'=>$request->owner,
+    'contact'=>$request->phone,
+    'email'=>$request->email,
+    'address'=>$request->address,
+    ]);
+    if($companyinfo){
+    session()->forget('registered_user_id');
+    return redirect('login')->with("success","Registration Successfull! You can login now.");
     }
     }
 

@@ -14,7 +14,7 @@
 
     <!-- Header -->
     <header class="header">
-        <h2>UserFORM_</h2>
+        <h2>{{$company->company_name}}</h2>
         <p>Manage your users easily</p>
     </header>
     
