@@ -343,7 +343,7 @@ Add-Users
                     $("#rangevalue").text("50000");
                 },
 
-                error: function(xhr) {
+                error:async function(xhr) {
                 // Check if the internet is currently off
                 if(!navigator.onLine){
                 // Delete old cached user data
