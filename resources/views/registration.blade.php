@@ -78,7 +78,7 @@
                         minlength="10"
                         onkeydown="return /[0-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
                         @error('phone.1')
-                        <span class = "text-danger"><small>{{ $message }}</small> </span>
+                        <span class = "text-danger"><small>The phone field is required.</small> </span>
                         @enderror
                 </div>
 
