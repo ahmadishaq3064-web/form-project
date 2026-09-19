@@ -20,6 +20,8 @@ Route::post('registration',[login::class,'registration']);
 // login page
 Route::get('login', function(){return view('login');});
 Route::post('login',[login::class,'login']);
+// show countries-code 
+Route::get('phonecode',[FormController::class,'phonecode']);
 });
 
 Route::middleware('registrationcompleted')->group(function(){
@@ -35,6 +37,7 @@ Route::get('dashboard', [FormController::class, 'averageage']);
 Route::post('user-data', [FormController::class, 'add']);
 // shows countries in dropdown using laravel and cache storage
 Route::get('countries',[FormController::class,'countries']);
+
 // Display the form/user-data blade
 Route::get('user-data', function(){return view('user-data');});
 // search and show data

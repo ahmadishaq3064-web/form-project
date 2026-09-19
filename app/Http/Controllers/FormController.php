@@ -42,12 +42,17 @@ class FormController extends Controller
     public function countries()
     {
         $response = Http::get('https://countriesnow.space/api/v0.1/countries');
-        return response()->json($response->json("data"));
+        return response()->json($response->json('data'));
 
         /* ye hum tab use krein gay jab directly laravel external api use kr rha ho
         $countries = $response->json('data');
         // Send countries and users to the Blade file
         return view('user-data', ['countries' => $countries]); */
+    }
+
+    public function phonecode(){
+    $response = Http::get('https://countries.dev/countries?fields=name,alpha2Code,callingCodes&sort=name');
+    return response()->json($response->json());
     }
 
     public function averageage(){

@@ -13,7 +13,9 @@ class login extends Controller
     $request->validate([
     'name'=> 'required|regex:/^[a-zA-Z ]+$/|between:3,20',
     'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
-    'phone'=> 'required|regex:/^03[0-9]{9}$/',
+    'phone'=> 'required|array',
+    'phone.0'=> 'required',
+    'phone.1'=>'required|regex:/^3[0-9]{9}$/',
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     'password_confirmation' => 'required|same:password'
     ]);
@@ -21,7 +23,7 @@ class login extends Controller
     $credentials = DB::table('credentials')->insertGetId([
     'name' => $request->name,
     'email' => $request->email,
-    'phone_number' => $request->phone,
+    'phone_number' => implode(" ",$request->phone),
     'password' => Hash::make($request->password),
     ]);
     session(['registered_user_id'=>$credentials]);
@@ -35,7 +37,9 @@ class login extends Controller
     $request->validate([
     'company'=>'required|regex:/^[a-zA-Z &#,.-]+$/|between:3,30',
     'owner'=>'required|regex:/^[a-zA-Z ]+$/|between:3,20',
-    'phone'=>'required|regex:/^03[0-9]{9}$/',
+    'phone'=> 'required|array',
+    'phone.0'=> 'required',
+    'phone.1'=>'required|regex:/^3[0-9]{9}$/',
     'email'=>'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'address'=>'required|regex:/^[a-zA-Z #,.-]+$/|between:20,120'
     ]);
@@ -45,7 +49,7 @@ class login extends Controller
     'company_name'=>$request->company,
     'user_id'=>$userid,
     'owner_name'=>$request->owner,
-    'contact'=>$request->phone,
+    'contact'=>implode(" ",$request->phone),
     'email'=>$request->email,
     'address'=>$request->address,
     ]);

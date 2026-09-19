@@ -73,7 +73,7 @@ Add-Users
                 <div class="input-four form-group">
                 <label>Country:</label>
                 <select name="country" class="form-control" id="country">
-                <option value="">Select Country</option>
+                
 
                 {{-- ye hum tab use krein gay jab directly laravel external api use kr rha ho --}}
                 {{-- @foreach ($countries as $country)
@@ -208,6 +208,7 @@ Add-Users
         }
     });
 
+    
     storecountries("{{url('countries')}}");
 
     // Create an async function to get and cache the countries

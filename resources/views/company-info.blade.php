@@ -69,18 +69,18 @@
 
             <div class="form-group">
             <label>Contact</label>
-
+            <select name="phone[]" id="phonecode"></select>
             <input
             type="tel"
             id="phone"
-            name="phone"
-            value="{{ old('phone')}}"
-            class="form-control @error('phone') is-invalid @enderror"
-            placeholder="03XXXXXXXXX"
-            maxlength="11"
-            minlength="11"
+            name="phone[]"
+            value="{{ old('phone.1')}}"
+            class="form-control @error('phone.1') is-invalid @enderror"
+            placeholder="3XXXXXXXXX"
+            maxlength="10"
+            minlength="10"
             onkeydown="return /[0-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
-            @error('phone')
+            @error('phone.1')
             <span class = "text-danger"><small>{{ $message }}</small> </span>
             @enderror
             </div>
@@ -130,8 +130,34 @@
         </div>
 
     </div>
-
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </div>
+<script>
+storephonecode("{{url('phonecode')}}");
+async function storephonecode(url){
+let cacheopen = await caches.open('phonecode');
+let cachechecked = await cacheopen.match(url);
+if(cachechecked){
+let response = await cachechecked.json();
+showphonecode(response);
+}
+$.ajax({
+url:url,
+type:"GET",
+success:async function(response){
+await cacheopen.put(url,new Response(JSON.stringify(response)));
+showphonecode(response);
+}
+})
+}
 
+function showphonecode(countries){
+let dropdown = $("#phonecode");
+dropdown.html("<option value='PK +92'>PK +92</option>");
+countries.forEach(function(country){
+dropdown.append('<option value="'+ country.alpha2Code+ ' +'+ country.callingCodes[0]+ '">'+ country.alpha2Code+ ' +'+ country.callingCodes[0]+ '</option>')});
+}
+</script>
 </body>
 </html>

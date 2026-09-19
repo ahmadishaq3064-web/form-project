@@ -635,6 +635,21 @@ Login Card
 margin-top: 10px;
 }
 
+/* Phone code + phone input */
+#phonecode {
+    width: 30%;
+    min-height: 45px;
+    border: 1px solid #747575;
+    border-radius: 7px;
+    padding: 4px;
+    background-color: #fff;
+}
+
+#phone {
+    width: 66%;
+    display: inline-block;
+    margin-left: 2px;
+}
 
 /* ------------------------------
 Success Message
