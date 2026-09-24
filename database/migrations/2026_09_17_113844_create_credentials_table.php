@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('credentials', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_photo',100);
             $table->string('name',100);
             $table->string('email',100);
             $table->string('phone_number',100);

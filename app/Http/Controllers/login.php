@@ -11,6 +11,7 @@ class login extends Controller
 {
     public function registration(Request $request){
     $request->validate([
+    'profile_photo'=> 'required|image|max:3000',
     'name'=> 'required|regex:/^[a-zA-Z ]+$/|between:3,20',
     'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'phone'=> 'required|array',
@@ -20,7 +21,9 @@ class login extends Controller
     'password_confirmation' => 'required|same:password'
     ]);
 
+    $path = $request->profile_photo->store('images','public');
     $credentials = DB::table('credentials')->insertGetId([
+    'profile_photo' => $path,
     'name' => $request->name,
     'email' => $request->email,
     'phone_number' => implode(" ",$request->phone),

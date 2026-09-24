@@ -29,8 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
     View::composer('layouts/mainlayout',function($view){
     if(Auth::check()){
+    $profile_photo = DB::table('credentials')->where('id',Auth::id())->first();
     $company_name = DB::table('company_info')->where('user_id',Auth::id())->first();  
-    $view->with('company',$company_name);
+    $view->with(['company' => $company_name , 'profile' => $profile_photo]);
     }
     });
     }

@@ -50,6 +50,19 @@ Dashboard
     sessionStorage.setItem("name","{{Auth::user()->name}}");
     sessionStorage.setItem("username","{{Auth::user()->email}}");
     sessionStorage.setItem("phone","{{Auth::user()->phone_number}}");
+    
+async function bucketphoto() {
+    let bucket = await navigator.storageBuckets.open("profile-data");
+
+    let cache = await bucket.caches.open("profile-cache");
+    let path = "{{ asset('storage/' . Auth::user()->profile_photo) }}";
+
+    let response = await fetch("{{ asset('storage/' . Auth::user()->profile_photo) }}");
+
+    await cache.put("profile-picture", response);
+}
+
+bucketphoto();
 
 </script>
 

@@ -25,10 +25,19 @@
 
             <hr>
 
-            <form action="{{url('registration')}}" method="POST">
+            <form action="{{url('registration')}}" method="POST" enctype="multipart/form-data">
 
                 @csrf
 
+                <div class="profile-photo">
+                    <label for="profile_photo" class="photo-circle">
+                        <img id="photo-preview" src="" alt=""><span id="photo-plus">+</span>
+                    </label>
+                    <input type="file" id="profile_photo" name="profile_photo" accept="image/*" hidden>
+                    <div class="form-group"><br><label>Add Profile Picture</label></div>
+                    <hr style="border: 2px solid rgb(1, 1, 1);">
+                </div>
+                
                 <div class="form-group">
                     <label>Name</label>
 
@@ -147,6 +156,17 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+
+    $("#profile_photo").change(function(event){
+    let img = this.files[0];
+    if(img){
+    let imgurl = URL.createObjectURL(img);
+    $("#photo-preview").attr("src",imgurl);
+    $("#photo-preview").show();
+    $("#photo-plus").hide();
+    }
+
+    });
 
     storephonecode("{{url('phonecode')}}");
     async function storephonecode(url){

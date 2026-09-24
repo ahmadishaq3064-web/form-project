@@ -14,8 +14,13 @@
 
     <!-- Header -->
     <header class="header">
-        <h2>{{$company->company_name}}</h2>
-        <p>Manage your users easily</p>
+        <div class="header-photo">
+            <img src="{{ asset('storage/' . $profile->profile_photo) }}" >
+        </div>
+        <div class="header-name">
+            <h2>{{$company->company_name}}</h2>
+            <p>Manage your users easily</p>
+        </div>
     </header>
     
         
