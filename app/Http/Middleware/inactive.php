@@ -17,14 +17,14 @@ class inactive
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check()){
-        $timeout = 10;
+        $timeout = 600;
         $last_activity = session('last_activity');
         if($last_activity && time() - $last_activity > $timeout){
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('login');
-        }
+        } 
         session(['last_activity' => time()]);
         }
         return $next($request);
