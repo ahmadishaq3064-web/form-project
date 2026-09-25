@@ -55,7 +55,6 @@ async function bucketphoto() {
     let bucket = await navigator.storageBuckets.open("profile-data");
 
     let cache = await bucket.caches.open("profile-cache");
-    let path = "{{ asset('storage/' . Auth::user()->profile_photo) }}";
 
     let response = await fetch("{{ asset('storage/' . Auth::user()->profile_photo) }}");
 

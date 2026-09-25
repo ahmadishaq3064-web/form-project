@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Middleware\inactive;
 use App\Http\Middleware\registrationcompleted;
 use App\Http\Middleware\validuser;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'isuservalid' => validuser::class,
         'registrationcompleted' => registrationcompleted::class,
+        'inactivelogout' => inactive::class, 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
