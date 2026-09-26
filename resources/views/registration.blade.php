@@ -7,7 +7,7 @@
 
     <title>Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link href="/path/to/cropper.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="logo.svg" type="image/x-icon">
 </head>
@@ -198,7 +198,7 @@
         </div>
 
     </div>
-    <script src="/path/to/cropper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
@@ -212,19 +212,85 @@
     let imgurl = URL.createObjectURL(img);
     $("#crop_image").attr("src",imgurl);
     $("#cropper_overlay").css("display","flex");
-    cropper = new Cropper(document.getElementById("crop_image"));
+    cropper = new Cropper(document.getElementById("crop_image"),{viewMode:1,autoCropArea:1,responsive:true});
     }
-    $("#close_cropper").click(function(){
-    $("#cropper_overlay").hide();
-    })
-    $("#cancel_crop").click(function(){
-    $("#cropper_overlay").hide();
-    })
-    $("#rotate_left").click(function(){
-    cropper.rotate(-90);
-    })
-  
     });
+
+    $("#close_cropper").click(function(){
+    if(cropper){
+    cropper.destroy();
+    cropper = null;
+    }
+    $("#cropper_overlay").hide();
+    })
+
+    
+
+    $("#cancel_crop").click(function(){
+    if(cropper){
+    cropper.destroy();
+    cropper = null;
+    }
+    $("#cropper_overlay").hide();
+    })
+
+    $("#rotate_left").click(function(){
+    if(cropper){
+    cropper.rotate(-90);
+    }
+    })
+
+    $("#rotate_right").click(function(){
+    if(cropper){
+    cropper.rotate(90);
+    }
+    })
+
+    $("#flip_horizontal").click(function(){
+    if(cropper){
+    let scale_x = cropper.getData().scaleX;
+    if(scale_x === undefined){
+    scale_x = 1;
+    }
+    cropper.scaleX(-scale_x);
+    }
+    })
+
+    $("#flip_vertical").click(function(){
+    if(cropper){
+    let scale_y = cropper.getData().scaleY;
+    if(scale_y === undefined){
+    scale_y = 1;
+    }
+    cropper.scaleY(-scale_y);
+    }
+    })
+
+    $("#free_crop").click(function(){
+    if(cropper){
+    cropper.setAspectRatio(NaN);
+    }
+    })
+    
+    $("#square_crop").click(function(){
+    if(cropper){
+    cropper.setAspectRatio(1);
+    }
+    })
+
+    $("#portrait_crop").click(function(){
+    if(cropper){
+    cropper.setAspectRatio(4/3);
+    }
+    })
+
+    $("#landscape_crop").click(function(){
+    if(cropper){
+    cropper.setAspectRatio(16/9);
+    }
+    })
+
+    
 
     storephonecode("{{url('phonecode')}}");
     async function storephonecode(url){
