@@ -50,10 +50,7 @@ class FormController extends Controller
         return view('user-data', ['countries' => $countries]); */
     }
 
-    public function phonecode(){
-    $response = Http::get('https://countries.dev/countries?fields=name,alpha2Code,callingCodes&sort=name');
-    return response()->json($response->json());
-    }
+    
 
     public function averageage(){
     // Get all existing users from the database

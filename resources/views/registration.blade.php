@@ -7,10 +7,55 @@
 
     <title>Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="/path/to/cropper.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="shortcut icon" href="logo.svg" type="image/x-icon">
 </head>
 <body>
+
+
+    <!-- Cropper Overlay -->
+    <div id="cropper_overlay">
+
+        <div id="cropper_box">
+            <!-- Header -->
+            <div id="cropper_header">
+                <h3>Edit Image</h3>
+                <button type="button" id="close_cropper">&times;</button>
+            </div>
+
+            <!-- Image Area -->
+            <div id="cropper_image_area">
+                <img id="crop_image" src="" alt="Image">
+            </div>
+
+            <!-- Controls -->
+            <div id="cropper_controls">
+                <div id="crop_actions">
+                    <button type="button" id="rotate_left">Rotate Left</button>
+                    <button type="button" id="rotate_right">Rotate Right</button>
+                    <button type="button" id="flip_horizontal">Flip Horizontal</button>
+                    <button type="button" id="flip_vertical">Flip Vertical</button>
+                </div>
+
+                <!-- Aspect Ratio -->
+                <div id="aspect_actions">
+                    <button type="button" id="free_crop">Free</button>
+                    <button type="button" id="square_crop">1:1</button>
+                    <button type="button" id="portrait_crop">4:3</button>
+                    <button type="button" id="landscape_crop">16:9</button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div id="cropper_footer">
+                <button type="button" id="cancel_crop">Cancel</button>
+                <button type="button" id="save_crop">Save Crop</button>
+            </div>
+        </div>
+
+    </div>
+
 
     <div class="auth-container">
 
@@ -153,19 +198,32 @@
         </div>
 
     </div>
+    <script src="/path/to/cropper.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+
+    
+    let cropper;
 
     $("#profile_photo").change(function(event){
     let img = this.files[0];
     if(img){
     let imgurl = URL.createObjectURL(img);
-    $("#photo-preview").attr("src",imgurl);
-    $("#photo-preview").show();
-    $("#photo-plus").hide();
+    $("#crop_image").attr("src",imgurl);
+    $("#cropper_overlay").css("display","flex");
+    cropper = new Cropper(document.getElementById("crop_image"));
     }
-
+    $("#close_cropper").click(function(){
+    $("#cropper_overlay").hide();
+    })
+    $("#cancel_crop").click(function(){
+    $("#cropper_overlay").hide();
+    })
+    $("#rotate_left").click(function(){
+    cropper.rotate(-90);
+    })
+  
     });
 
     storephonecode("{{url('phonecode')}}");

@@ -21,7 +21,7 @@ Route::post('registration',[login::class,'registration']);
 Route::get('login', function(){return view('login');});
 Route::post('login',[login::class,'login']);
 // show countries-code 
-Route::get('phonecode',[FormController::class,'phonecode']);
+Route::get('phonecode',[login::class,'phonecode']);
 });
 
 Route::middleware('registrationcompleted')->group(function(){

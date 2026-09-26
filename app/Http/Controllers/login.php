@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class login extends Controller
 {
@@ -34,6 +35,11 @@ class login extends Controller
     if($credentials){
     return redirect('company-info');
     }
+    }
+
+    public function phonecode(){
+    $response = Http::get('https://countries.dev/countries?fields=name,alpha2Code,callingCodes&sort=name');
+    return response()->json($response->json());
     }
 
     public function companyinfo(Request $request){
