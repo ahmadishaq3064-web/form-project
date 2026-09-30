@@ -228,6 +228,7 @@
     cropper.destroy();
     cropper = null;
     }
+    $(".crop_button").removeClass("active");
     $("#cropper_overlay").hide();
     })
 
@@ -238,6 +239,7 @@
     cropper.destroy();
     cropper = null;
     }
+    $(".crop_button").removeClass("active");
     $("#cropper_overlay").hide();
     })
 
@@ -299,6 +301,7 @@
     })
 
     $("#save_crop").click(function(){ 
+    $(".crop_button").removeClass("active");
     if(!cropper){ 
     return; 
     } 

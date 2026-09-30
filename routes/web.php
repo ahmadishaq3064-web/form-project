@@ -30,7 +30,7 @@ Route::get('company-info',function(){return view('company-info');});
 Route::post('company-info',[login::class,'companyinfo']);
 });
 
-Route::middleware('isuservalid','inactivelogout')->group(function(){
+Route::middleware('isuservalid','inactivelogout','preventbackbutton')->group(function(){
 // Display the user data page
 Route::get('dashboard', [FormController::class, 'averageage']);
 // Receive the AJAX form submission
