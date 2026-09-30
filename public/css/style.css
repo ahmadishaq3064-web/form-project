@@ -721,6 +721,10 @@ Login & Registration Pages
     background: #0b5ed7 !important;
 }
 
+.crop_button.active {
+    background-color: #0b5ed7 !important;
+    color: #fff;
+}
 
 
 /* ------------------------------

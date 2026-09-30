@@ -32,18 +32,18 @@
             <!-- Controls -->
             <div id="cropper_controls">
                 <div id="crop_actions">
-                    <button type="button" id="rotate_left">Rotate Left</button>
-                    <button type="button" id="rotate_right">Rotate Right</button>
-                    <button type="button" id="flip_horizontal">Flip Horizontal</button>
-                    <button type="button" id="flip_vertical">Flip Vertical</button>
+                    <button class="crop_button" type="button" id="rotate_left">Rotate Left</button>
+                    <button class="crop_button" type="button" id="rotate_right">Rotate Right</button>
+                    <button class="crop_button" type="button" id="flip_horizontal">Flip Horizontal</button>
+                    <button class="crop_button" type="button" id="flip_vertical">Flip Vertical</button>
                 </div>
 
                 <!-- Aspect Ratio -->
                 <div id="aspect_actions">
-                    <button type="button" id="free_crop">Free</button>
-                    <button type="button" id="square_crop">1:1</button>
-                    <button type="button" id="portrait_crop">4:3</button>
-                    <button type="button" id="landscape_crop">16:9</button>
+                    <button class="crop_button" type="button" id="free_crop">Free</button>
+                    <button class="crop_button" type="button" id="square_crop">1:1</button>
+                    <button class="crop_button" type="button" id="portrait_crop">4:3</button>
+                    <button class="crop_button" type="button" id="landscape_crop">16:9</button>
                 </div>
             </div>
 
@@ -205,16 +205,23 @@
 
     
     let cropper;
+    let img;
 
     $("#profile_photo").change(function(event){
-    let img = this.files[0];
+    img = this.files[0];
     if(img){
     let imgurl = URL.createObjectURL(img);
     $("#crop_image").attr("src",imgurl);
     $("#cropper_overlay").css("display","flex");
+    $("#free_crop").addClass("active");
     cropper = new Cropper(document.getElementById("crop_image"),{viewMode:1,autoCropArea:1,responsive:true});
     }
     });
+
+    $(".crop_button").click(function(){
+    $(".crop_button").removeClass("active");
+    $(this).addClass("active");
+    })
 
     $("#close_cropper").click(function(){
     if(cropper){
@@ -276,6 +283,7 @@
     if(cropper){
     cropper.setAspectRatio(1);
     }
+    
     })
 
     $("#portrait_crop").click(function(){
@@ -290,7 +298,30 @@
     }
     })
 
-    
+    $("#save_crop").click(function(){ 
+    if(!cropper){ 
+    return; 
+    } 
+    // canvas variable me cropped image ka result store hai
+    let canvas = cropper.getCroppedCanvas({width:500,height:500}); 
+    // yahan hum ne cropped image ko Blob me convert kiya hai taake uski File bana sakein
+    canvas.toBlob(function(blob){ 
+    let file = new File([blob],img.name,{type:img.type}); 
+    // yahan hum ne cropped File ko input me set kiya hai taake form submit hone par Laravel ko bhej sakein
+    let data_transfer = new DataTransfer(); 
+    data_transfer.items.add(file); 
+    document.getElementById("profile_photo").files = data_transfer.files; 
+    $("#photo-preview").attr("src",URL.createObjectURL(file)); 
+    $("#photo-preview").show(); 
+    $("#cropper_overlay").hide(); 
+    $("#photo-plus").hide(); 
+    cropper.destroy(); 
+    cropper = null; 
+    },img.type,0.9); 
+    })
+
+
+
 
     storephonecode("{{url('phonecode')}}");
     async function storephonecode(url){
