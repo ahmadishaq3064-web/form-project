@@ -17,6 +17,8 @@ Route::get('/',function(){return view('welcome');});
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
+// verify_otp page
+Route::get('verify-otp', function(){return view('verify-otp');});
 // login page
 Route::get('login', function(){return view('login');});
 Route::post('login',[login::class,'login']);

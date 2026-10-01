@@ -33,7 +33,7 @@ class login extends Controller
     session(['registered_user_id'=>$credentials]);
 
     if($credentials){
-    return redirect('company-info');
+    return redirect('verify_otp');
     }
     }
 

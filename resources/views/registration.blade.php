@@ -68,8 +68,6 @@
                 <p>Register a new account</p>
             </div>
 
-            <hr>
-
             <form action="{{url('registration')}}" method="POST" enctype="multipart/form-data">
 
                 @csrf
@@ -179,7 +177,7 @@
 
                 <div class="auth-button">
                     <button type="submit" class="form-control">
-                        Register
+                        Get OTP
                     </button>
                 </div>
 
