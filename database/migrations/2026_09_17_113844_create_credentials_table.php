@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('email',100);
             $table->string('phone_number',100);
             $table->string('password',100);
+            $table->string('otp',100);
+            $table->string('verified_status',100);
         });
     }
 

@@ -28,7 +28,7 @@
 
             <hr>
 
-            <form action="{{url('registration')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{url('verify-otp')}}" method="POST" enctype="multipart/form-data">
 
                 @csrf
 
@@ -39,15 +39,15 @@
 
                     <input
                         type="text"
-                        id="name"
-                        name="name"
-                        value="{{ old('name')}}"
-                        class="form-control @error('name') is-invalid @enderror"
+                        id="otp"
+                        name="otp"
+                        value="{{ old('otp')}}"
+                        class="form-control @error('otp') is-invalid @enderror"
                         placeholder="Enter Your Otp ..."
-                        maxlength="20" 
-                        minlength="3"
-                        onkeydown="return /[a-zA-Z ]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
-                        @error('name')
+                        maxlength="6" 
+                        minlength="6"
+                        onkeydown="return /[0-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
+                        @error('otp')
                         <span class = "text-danger"><small>{{ $message }}</small></span>
                         @enderror
                     </div>

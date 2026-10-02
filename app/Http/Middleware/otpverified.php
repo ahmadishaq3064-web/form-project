@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class registrationcompleted
+class otpverified
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class registrationcompleted
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!session()->has('registered_user_id') ){
-        return redirect('verify-otp');
+        if(!session()->has('registered_status')){
+        return redirect('registration');
         }
         return $next($request);
     }

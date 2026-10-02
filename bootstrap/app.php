@@ -2,6 +2,7 @@
 
 
 use App\Http\Middleware\inactive;
+use App\Http\Middleware\otpverified;
 use App\Http\Middleware\preventbackbutton;
 use App\Http\Middleware\registrationcompleted;
 use App\Http\Middleware\validuser;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'isuservalid' => validuser::class,
         'registrationcompleted' => registrationcompleted::class,
+        'verificationstep' => otpverified::class,
         'inactivelogout' => inactive::class,
         'preventbackbutton' => preventbackbutton::class, 
         ]);

@@ -17,8 +17,6 @@ Route::get('/',function(){return view('welcome');});
 // registration page
 Route::get('registration', function(){return view('registration');});
 Route::post('registration',[login::class,'registration']);
-// verify_otp page
-Route::get('verify-otp', function(){return view('verify-otp');});
 // login page
 Route::get('login', function(){return view('login');});
 Route::post('login',[login::class,'login']);
@@ -26,11 +24,18 @@ Route::post('login',[login::class,'login']);
 Route::get('phonecode',[login::class,'phonecode']);
 });
 
+Route::middleware('verificationstep')->group(function(){
+// verify_otp page
+Route::get('verify-otp', function(){return view('verify-otp');});
+Route::post('verify-otp',[login::class,'verifyotp']);
+});
+
 Route::middleware('registrationcompleted')->group(function(){
 // company detail form
 Route::get('company-info',function(){return view('company-info');});
 Route::post('company-info',[login::class,'companyinfo']);
 });
+
 
 Route::middleware('isuservalid','inactivelogout','preventbackbutton')->group(function(){
 // Display the user data page

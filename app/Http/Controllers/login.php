@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\emailotpverify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class login extends Controller
 {
@@ -14,13 +16,15 @@ class login extends Controller
     $request->validate([
     'profile_photo'=> 'required|image|max:3000',
     'name'=> 'required|regex:/^[a-zA-Z ]+$/|between:3,20',
-    'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+    'email'=> 'required|unique:credentials,email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'phone'=> 'required|array',
     'phone.0'=> 'required',
     'phone.1'=>'required|regex:/^3[0-9]{9}$/',
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     'password_confirmation' => 'required|same:password'
     ]);
+
+    $otp = rand(100000,999999);
 
     $path = $request->profile_photo->store('images','public');
     $credentials = DB::table('credentials')->insertGetId([
@@ -29,11 +33,13 @@ class login extends Controller
     'email' => $request->email,
     'phone_number' => implode(" ",$request->phone),
     'password' => Hash::make($request->password),
+    'otp' => $otp,
+    'verified_status' => 0,
     ]);
-    session(['registered_user_id'=>$credentials]);
-
+    session(['registered_status'=>0,'registered_user_id'=>$credentials]);
     if($credentials){
-    return redirect('verify_otp');
+    Mail::to($request->email)->send(new emailotpverify($otp));
+    return redirect('verify-otp');
     }
     }
 
@@ -41,6 +47,23 @@ class login extends Controller
     $response = Http::get('https://countries.dev/countries?fields=name,alpha2Code,callingCodes&sort=name');
     return response()->json($response->json());
     }
+
+    public function verifyotp(Request $request){
+    $request->validate([
+    'otp' => 'required|digits:6'
+    ]);
+    $userid = session('registered_user_id');
+    $user = DB::table('credentials')->where('id',$userid)->first();
+    if(!$user){
+    return redirect('registration');
+    }
+    if($user->otp == $request->otp){
+    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1]);
+    return redirect('company-info');
+    }
+    return back()->withErrors([ 'otp' => 'Invalid OTP.']);
+    }
+
 
     public function companyinfo(Request $request){
     $request->validate([
