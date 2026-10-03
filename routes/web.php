@@ -28,6 +28,7 @@ Route::middleware('verificationstep')->group(function(){
 // verify_otp page
 Route::get('verify-otp', function(){return view('verify-otp');});
 Route::post('verify-otp',[login::class,'verifyotp']);
+Route::post('resend-otp',[login::class,'resendotp']);
 });
 
 Route::middleware('registrationcompleted')->group(function(){

@@ -825,6 +825,21 @@ margin-top: 10px;
     margin-left: 2px;
 }
 
+#resendotp{
+padding: 5px;
+border-radius: 7px;
+}
+
+#timer{
+padding-top: 15px;
+}
+
+.resendotp{
+margin-top:10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
 /* ------------------------------
 Success Message
 ------------------------------ */

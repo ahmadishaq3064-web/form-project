@@ -28,7 +28,7 @@
 
             <hr>
 
-            <form action="{{url('verify-otp')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{url('verify-otp')}}" method="POST">
 
                 @csrf
 
@@ -61,15 +61,34 @@
 
             </form>
 
-
-        
-
+            
+            <form action="{{url('resend-otp')}}" method="POST">
+            @csrf
+            <div class="resendotp">
+            <p id="timer">Resend OTP in 60 seconds</p>
+            <button type="submit" id="resendotp" disabled >Resend OTP</button>
+            </div>
+            
+            </form>
+            
         </div>
 
         </div>
 
     </div>
 
+<script>
+let second = 60;
+let timer = setInterval(() => {
+document.getElementById('timer').innerHTML = 'Resend OTP in ' + second + ' seconds.';
+second--;
+if(second<0){
+clearInterval(timer);
+document.getElementById('timer').innerHTML = 'You can resend OTP now';
+document.getElementById('resendotp').disabled = false;
+}
+}, 1000);
+</script>
 
 </body>
 </html>

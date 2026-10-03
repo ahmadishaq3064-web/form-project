@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class otpverified
+class otppending
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class otpverified
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!session()->has('registered_status')){
+        if(!session()->has('otp_pending') && !session()->has('registered_user_id') ){
         return redirect('registration');
         }
         return $next($request);

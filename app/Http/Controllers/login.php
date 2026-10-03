@@ -25,7 +25,8 @@ class login extends Controller
     ]);
 
     $otp = rand(100000,999999);
-
+    $otp_expires_at = now()->addMinutes(1);
+    
     $path = $request->profile_photo->store('images','public');
     $credentials = DB::table('credentials')->insertGetId([
     'profile_photo' => $path,
@@ -35,8 +36,11 @@ class login extends Controller
     'password' => Hash::make($request->password),
     'otp' => $otp,
     'verified_status' => 0,
+    'otp_expires_at' => $otp_expires_at,
+    'registration_completed' => 0,
     ]);
-    session(['registered_status'=>0,'registered_user_id'=>$credentials]);
+    // ye session is liye bnaya gya hai taky sirf registration wala form complete hony ky baad hee verify-otp wala page access kiya ja saky
+    session(['registered_user_id'=>$credentials,'otp_pending'=>true]);
     if($credentials){
     Mail::to($request->email)->send(new emailotpverify($otp));
     return redirect('verify-otp');
@@ -52,16 +56,43 @@ class login extends Controller
     $request->validate([
     'otp' => 'required|digits:6'
     ]);
+    // ye session is liye store kraya gya hai taky latest registered user ko sirf verify-otp ka access diya ja saky ..
+    $userid = session('registered_user_id');
+    // is query ky zariye hum latest user ko access krty han
+    $user = DB::table('credentials')->where('id',$userid)->first();
+    if(!$user){
+    return redirect('registration');
+    }
+    // Otp ki expiry check krny ky liye
+    if(now()->greaterThanOrEqualTo($user->otp_expires_at)){
+    return back()->withErrors([ 'otp' => 'OTP has expired.']);
+    }
+    // agr user ki otp aur input ki otp same ho gi to ye verified status ko 0 sy 1 kr dy ga 
+    if($user->otp == $request->otp){
+    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1]);
+    // ye session company-info waly page ko access krny ky liye hai
+    session(['otpverified'=>true]);
+    // yahan hum ny verify-otp ko access krny ky liye jo session bnaya usko khtm krdiya hai taky dobara sy ye page access na kiya ja saky
+    session()->forget('otp_pending');
+    return redirect('company-info');
+    }
+    return back()->withErrors([ 'otp' => 'Invalid OTP.']);
+    }
+
+    public function resendotp(Request $request){
     $userid = session('registered_user_id');
     $user = DB::table('credentials')->where('id',$userid)->first();
     if(!$user){
     return redirect('registration');
     }
-    if($user->otp == $request->otp){
-    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1]);
-    return redirect('company-info');
+    if(now()->lessThan($user->otp_expires_at)){
+    return back()->withErrors(['otp'=>'Please wait before requesting another OTP.']);
     }
-    return back()->withErrors([ 'otp' => 'Invalid OTP.']);
+    $otp = rand(100000,999999);
+    $newotpexpiry = now()->addMinutes(1);
+    DB::table('credentials')->where('id',$userid)->update(['otp'=>$otp,'otp_expires_at'=>$newotpexpiry]);
+    Mail::to($user->email)->send(new emailotpverify($otp));
+    return back();
     }
 
 
@@ -85,17 +116,26 @@ class login extends Controller
     'email'=>$request->email,
     'address'=>$request->address,
     ]);
+    DB::table('credentials')->where('id',$userid)->update(['registration_completed' => 1]);
     if($companyinfo){
+    session()->forget('otpverified');
     session()->forget('registered_user_id');
     return redirect('login')->with("success","Registration Successfull! You can login now.");
     }
     }
 
     public function login(Request $request){
-    $credentials = $request->validate([
+    $request->validate([
     'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     ]);
+
+    $credentials = [
+    'email' => $request->email,
+    'password' => $request->password,
+    'registration_completed' => 1,
+    ];
+
 
     if(Auth::attempt($credentials)){
     return redirect("dashboard");

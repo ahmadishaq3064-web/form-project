@@ -25,7 +25,7 @@
     </div>
 
     <p style="color:#777; font-size:14px;">
-        This OTP is valid for 5 minutes.
+        This OTP is valid for 1 minutes.
     </p>
 
     <p style="color:#999; font-size:12px; margin-top:25px;">
