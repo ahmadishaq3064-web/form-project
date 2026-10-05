@@ -28,14 +28,14 @@
 
             <hr>
 
-            <form action="{{url('verify-otp')}}" method="POST">
+            <form action="{{url('verify-otp-sms')}}" method="POST">
 
                 @csrf
 
                 
                 
                 <div class="form-group">
-                    <label>OTP Verification</label>
+                    <label>OTP Verification via phone number (sms)</label>
 
                     <input
                         type="text"

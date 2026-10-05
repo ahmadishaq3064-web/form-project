@@ -15,8 +15,8 @@ class registrationcompleted
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!session()->has('registered_user_id') && !session()->has('otpverified')){
-        return redirect('verify-otp');
+        if(!session()->has('otpverified') &&  !session()->has('registered_user_id')){
+        return redirect('verify-otp-gmail');
         }
         return $next($request);
     }

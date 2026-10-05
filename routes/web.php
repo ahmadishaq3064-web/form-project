@@ -25,10 +25,12 @@ Route::get('phonecode',[login::class,'phonecode']);
 });
 
 Route::middleware('verificationstep')->group(function(){
-// verify_otp page
-Route::get('verify-otp', function(){return view('verify-otp');});
-Route::post('verify-otp',[login::class,'verifyotp']);
-Route::post('resend-otp',[login::class,'resendotp']);
+// verify-otp-gmail page
+Route::get('verify-otp-gmail', function(){return view('verify-otp-gmail');});
+Route::post('verify-otp-gmail',[login::class,'verifyotp-gmail']);
+Route::post('resend-otp-gmail',[login::class,'resendotp-gmail']);
+// verify-otp-sms page
+Route::get('verify-otp-sms',function(){return view('verify-otp-sms');});
 });
 
 Route::middleware('registrationcompleted')->group(function(){

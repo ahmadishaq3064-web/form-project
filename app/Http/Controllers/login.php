@@ -42,8 +42,14 @@ class login extends Controller
     // ye session is liye bnaya gya hai taky sirf registration wala form complete hony ky baad hee verify-otp wala page access kiya ja saky
     session(['registered_user_id'=>$credentials,'otp_pending'=>true]);
     if($credentials){
+    if($request->otp_method == 'gmail'){
     Mail::to($request->email)->send(new emailotpverify($otp));
-    return redirect('verify-otp');
+    return redirect('verify-otp-gmail');
+    }
+    if($request->otp_method == 'sms'){
+    
+    return redirect('verify-otp-sms');
+    }
     }
     }
 
