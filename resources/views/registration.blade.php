@@ -117,19 +117,19 @@
 
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <select name="country_code"  id="phonecode" >
+                    <select name="phone[]"  id="phonecode" >
                     </select>
                     <input
                         type="tel"
                         id="phone"
-                        name="phone"
-                        value="{{ old('phone')}}"
-                        class="form-control @error('phone') is-invalid @enderror"
+                        name="phone[]"
+                        value="{{ old('phone.1')}}"
+                        class="form-control @error('phone.1') is-invalid @enderror"
                         placeholder="3XXXXXXXXX"
                         maxlength="10"
                         minlength="10"
                         onkeydown="return /[0-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
-                        @error('phone')
+                        @error('phone.1')
                         <span class = "text-danger"><small>{{ $message }}</small> </span>
                         @enderror
                 </div>

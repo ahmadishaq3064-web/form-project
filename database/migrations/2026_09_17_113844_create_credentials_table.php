@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('profile_photo',100);
             $table->string('name',100);
             $table->string('email',100);
+            $table->string('country_code',100);
             $table->string('phone_number',100);
             $table->string('password',100);
             $table->string('otp',100);

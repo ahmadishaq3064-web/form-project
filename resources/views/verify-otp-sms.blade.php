@@ -77,6 +77,7 @@
 
     </div>
 
+
 <script>
 let second = 60;
 let timer = setInterval(() => {
@@ -88,6 +89,32 @@ document.getElementById('timer').innerHTML = 'You can resend OTP now';
 document.getElementById('resendotp').disabled = false;
 }
 }, 1000);
+
+</script>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+  import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2TWoflaLPUgptuCCmx1PwG8sN8EoK2wg",
+    authDomain: "phone-otp-testing-laravel.firebaseapp.com",
+    projectId: "phone-otp-testing-laravel",
+    storageBucket: "phone-otp-testing-laravel.firebasestorage.app",
+    messagingSenderId: "522813193451",
+    appId: "1:522813193451:web:48f3fdbd15f397b96312ae"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 </script>
 
 </body>

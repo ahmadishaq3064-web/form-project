@@ -26,13 +26,21 @@ class login extends Controller
 
     $otp = rand(100000,999999);
     $otp_expires_at = now()->addMinutes(1);
-    
+    // yahan py hum ny country code or phone number ko merge kiya hai
+    $phone = $request->phone[0] . $request->phone[1];
+    // yahan py hum ny phone number ko + ky sign py separate kiya hai
+    $position = strpos($phone,"+");
+    // yahan py + sign sy phly ki values ayein gii
+    $country_code = substr($phone,0,$position);
+    // yahan py + sign ky baad ki values ayein gi 
+    $phone_number = substr($phone,$position);
     $path = $request->profile_photo->store('images','public');
     $credentials = DB::table('credentials')->insertGetId([
     'profile_photo' => $path,
     'name' => $request->name,
     'email' => $request->email,
-    'phone_number' => implode(" ",$request->phone),
+    'country_code' => $country_code,
+    'phone_number' => $phone_number,
     'password' => Hash::make($request->password),
     'otp' => $otp,
     'verified_status' => 0,
