@@ -28,7 +28,7 @@
 
             <hr>
 
-            <form action="{{url('verify-otp-sms')}}" method="POST">
+            <form>
 
                 @csrf
 
@@ -47,50 +47,33 @@
                         maxlength="6" 
                         minlength="6"
                         onkeydown="return /[0-9]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)">
-                        @error('otp')
-                        <span class = "text-danger"><small>{{ $message }}</small></span>
-                        @enderror
+                        <small class="text-danger" id="otp_error"></small>
                     </div>
 
 
                 <div class="auth-button">
-                    <button type="submit" class="form-control">
+                    <button type="button" class="form-control" id="verify_phone_otp">
                         Verify OTP
                     </button>
                 </div>
 
-            </form>
+                
 
-            
-            <form action="{{url('resend-otp')}}" method="POST">
-            @csrf
-            <div class="resendotp">
-            <p id="timer">Resend OTP in 60 seconds</p>
-            <button type="submit" id="resendotp" disabled >Resend OTP</button>
-            </div>
-            
             </form>
+            <hr>
+            <div class="recaptcha">
+            <p class="text-muted text-center mb-2">Please complete the reCAPTCHA to receive your OTP via SMS.</p>
+            <div id="recaptcha-container"></div>
+            </div>
+           
             
         </div>
 
         </div>
 
     </div>
-
-
-<script>
-let second = 60;
-let timer = setInterval(() => {
-document.getElementById('timer').innerHTML = 'Resend OTP in ' + second + ' seconds.';
-second--;
-if(second<0){
-clearInterval(timer);
-document.getElementById('timer').innerHTML = 'You can resend OTP now';
-document.getElementById('resendotp').disabled = false;
-}
-}, 1000);
-
-</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script type="module">
   // Import the functions you need from the SDKs you need
@@ -115,6 +98,49 @@ document.getElementById('resendotp').disabled = false;
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+
+// firebase javascript
+const phone_number = "{{session('phone_number')}}";
+// yahan hum ny recapcha ki coding ki hai
+window.recaptchaVerifier = new RecaptchaVerifier(auth,'recaptcha-container',{});
+// yahan hum ny message send krny ki coding ki hai
+signInWithPhoneNumber(auth,phone_number,window.recaptchaVerifier).then(function(confirmationResult){
+window.confirmationResult = confirmationResult;
+console.log("OTP Sent ..");
+})
+.catch(function(error){
+console.log(error);
+});
+
+$("#verify_phone_otp").click(function(){
+let otp = $("#otp").val();
+// Jo OTP user ne enter kiya hai, usko Firebase ke bheje hue OTP ke saath verify kr rahy han
+window.confirmationResult.confirm(otp).then(async function(result){
+// Firebase successful OTP verification ke baad user ka Firebase .user object deta hai
+// yahan hum ny token liya hai jis ko hum use kr ky laravel ko btain gay ky ye user verified hai
+let token = await result.user.getIdToken();
+$.ajax({
+url:"{{url('verify-otp-sms')}}",
+type:'POST',
+data:{
+otp:otp,
+_token:"{{csrf_token()}}",
+firebase_token:token
+},
+success:function(response){
+// yahan ye agly page py bhej dy ga
+window.location.href = "{{url('company-info')}}";
+},
+error:function(){
+$("#otp_error").text("Phone Verification Failed.");
+} 
+});
+})
+.catch(function(error){
+$("#otp_error").text("Invalid OTP.");
+})
+})
+
 </script>
 
 </body>

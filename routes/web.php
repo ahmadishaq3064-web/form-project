@@ -27,10 +27,11 @@ Route::get('phonecode',[login::class,'phonecode']);
 Route::middleware('verificationstep')->group(function(){
 // verify-otp-gmail page
 Route::get('verify-otp-gmail', function(){return view('verify-otp-gmail');});
-Route::post('verify-otp-gmail',[login::class,'verifyotp-gmail']);
-Route::post('resend-otp-gmail',[login::class,'resendotp-gmail']);
+Route::post('verify-otp-gmail',[login::class,'verifyotpgmail']);
+Route::post('resend-otp-gmail',[login::class,'resendotpgmail']);
 // verify-otp-sms page
 Route::get('verify-otp-sms',function(){return view('verify-otp-sms');});
+Route::post('verify-otp-sms',[login::class,'verifyotpsms']);
 });
 
 Route::middleware('registrationcompleted')->group(function(){

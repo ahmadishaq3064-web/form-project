@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\emailotpverify;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class login extends Controller
 {
@@ -24,7 +26,6 @@ class login extends Controller
     'password_confirmation' => 'required|same:password'
     ]);
 
-    $otp = rand(100000,999999);
     $otp_expires_at = now()->addMinutes(1);
     // yahan py hum ny country code or phone number ko merge kiya hai
     $phone = $request->phone[0] . $request->phone[1];
@@ -42,7 +43,7 @@ class login extends Controller
     'country_code' => $country_code,
     'phone_number' => $phone_number,
     'password' => Hash::make($request->password),
-    'otp' => $otp,
+    'otp' => null,
     'verified_status' => 0,
     'otp_expires_at' => $otp_expires_at,
     'registration_completed' => 0,
@@ -51,11 +52,14 @@ class login extends Controller
     session(['registered_user_id'=>$credentials,'otp_pending'=>true]);
     if($credentials){
     if($request->otp_method == 'gmail'){
+    $otp = rand(100000,999999);
+    $userid = session('registered_user_id');
+    DB::table('credentials')->where("id",$userid)->update(['otp' => $otp]);
     Mail::to($request->email)->send(new emailotpverify($otp));
     return redirect('verify-otp-gmail');
     }
     if($request->otp_method == 'sms'){
-    
+    session(['phone_number' => $phone_number]);
     return redirect('verify-otp-sms');
     }
     }
@@ -66,7 +70,7 @@ class login extends Controller
     return response()->json($response->json());
     }
 
-    public function verifyotp(Request $request){
+    public function verifyotpgmail(Request $request){
     $request->validate([
     'otp' => 'required|digits:6'
     ]);
@@ -93,7 +97,7 @@ class login extends Controller
     return back()->withErrors([ 'otp' => 'Invalid OTP.']);
     }
 
-    public function resendotp(Request $request){
+    public function resendotpgmail(Request $request){
     $userid = session('registered_user_id');
     $user = DB::table('credentials')->where('id',$userid)->first();
     if(!$user){
@@ -107,6 +111,25 @@ class login extends Controller
     DB::table('credentials')->where('id',$userid)->update(['otp'=>$otp,'otp_expires_at'=>$newotpexpiry]);
     Mail::to($user->email)->send(new emailotpverify($otp));
     return back();
+    }
+
+    public function verifyotpsms(Request $request){
+    $request->validate([
+    'firebase_token' => 'required',
+    'otp' => 'required|digits:6',
+    
+    ]);
+    try{
+    if(Firebase::auth()->verifyIdToken($request->firebase_token)){
+    $otp = $request->otp;
+    $userid = session('registered_user_id');
+    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1,'otp'=> $otp]);
+    session(['otpverified'=>true]);
+    return response()->json(['success'=>true]);
+    }
+    }catch(Exception $e){
+    return response()->json(['message'=>'Phone verification failed.'],401);
+    }
     }
 
 

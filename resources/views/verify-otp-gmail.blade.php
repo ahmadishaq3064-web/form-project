@@ -28,7 +28,7 @@
 
             <hr>
 
-            <form action="{{url('verify-otp')}}" method="POST">
+            <form action="{{url('verify-otp-gmail')}}" method="POST">
 
                 @csrf
 
@@ -62,7 +62,7 @@
             </form>
 
             
-            <form action="{{url('resend-otp')}}" method="POST">
+            <form action="{{url('resend-otp-gmail')}}" method="POST">
             @csrf
             <div class="resendotp">
             <p id="timer">Resend OTP in 60 seconds</p>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('country_code',100);
             $table->string('phone_number',100);
             $table->string('password',100);
-            $table->string('otp',100);
+            $table->string('otp',100)->nullable();
             $table->string('verified_status',100);
             $table->dateTime('otp_expires_at');
             $table->string('registration_completed',100);

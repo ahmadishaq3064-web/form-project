@@ -840,6 +840,11 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 }
+
+#recaptcha-container{
+margin-top: 15px;
+margin-left: 28px;
+}
 /* ------------------------------
 Success Message
 ------------------------------ */
