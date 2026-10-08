@@ -65,6 +65,7 @@
             <p class="text-muted text-center mb-2">Please complete the reCAPTCHA to receive your OTP via SMS.</p>
             <div id="recaptcha-container"></div>
             </div>
+            <p class="text-success text-center mb-2" id="verification-successful"></p>
            
             
         </div>
@@ -102,15 +103,22 @@
 // firebase javascript
 const phone_number = "{{session('phone_number')}}";
 // yahan hum ny recapcha ki coding ki hai
-window.recaptchaVerifier = new RecaptchaVerifier(auth,'recaptcha-container',{});
+window.recaptchaVerifier = new RecaptchaVerifier(auth,'recaptcha-container',{
+// yahan hum ny built in callback property use kii hai jo ek function tab run krti hai jab captcha verified ho jay ga 
+callback:function(response){
+console.log("OTP Sent ..");
+$(".recaptcha").hide();
+$("#verification-successful").text("Verification successful. You’re verified as a human. Sending OTP…");
+}
+});
 // yahan hum ny message send krny ki coding ki hai
 signInWithPhoneNumber(auth,phone_number,window.recaptchaVerifier).then(function(confirmationResult){
 window.confirmationResult = confirmationResult;
-console.log("OTP Sent ..");
 })
 .catch(function(error){
 console.log(error);
 });
+
 
 $("#verify_phone_otp").click(function(){
 let otp = $("#otp").val();
