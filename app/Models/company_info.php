@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class users extends Model
+class company_info extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
     public $timestamps = false;
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\emailotpverify;
+use App\Models\credential;
+use App\Models\company_info;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -36,7 +37,7 @@ class login extends Controller
     // yahan py + sign ky baad ki values ayein gi 
     $phone_number = substr($phone,$position);
     $path = $request->profile_photo->store('images','public');
-    $credentials = DB::table('credentials')->insertGetId([
+    $credentials = credential::create([
     'profile_photo' => $path,
     'name' => $request->name,
     'email' => $request->email,
@@ -48,13 +49,14 @@ class login extends Controller
     'otp_expires_at' => $otp_expires_at,
     'registration_completed' => 0,
     ]);
+    $id = $credentials->id;
     // ye session is liye bnaya gya hai taky sirf registration wala form complete hony ky baad hee verify-otp wala page access kiya ja saky
-    session(['registered_user_id'=>$credentials,'otp_pending'=>true]);
+    session(['registered_user_id'=>$id,'otp_pending'=>true]);
     if($credentials){
     if($request->otp_method == 'gmail'){
     $otp = rand(100000,999999);
     $userid = session('registered_user_id');
-    DB::table('credentials')->where("id",$userid)->update(['otp' => $otp]);
+    credential::where("id",$userid)->update(['otp' => $otp]);
     Mail::to($request->email)->send(new emailotpverify($otp));
     return redirect('verify-otp-gmail');
     }
@@ -77,7 +79,7 @@ class login extends Controller
     // ye session is liye store kraya gya hai taky latest registered user ko sirf verify-otp ka access diya ja saky ..
     $userid = session('registered_user_id');
     // is query ky zariye hum latest user ko access krty han
-    $user = DB::table('credentials')->where('id',$userid)->first();
+    $user = credential::where('id',$userid)->first();
     if(!$user){
     return redirect('registration');
     }
@@ -87,7 +89,7 @@ class login extends Controller
     }
     // agr user ki otp aur input ki otp same ho gi to ye verified status ko 0 sy 1 kr dy ga 
     if($user->otp == $request->otp){
-    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1]);
+    credential::where("id",$userid)->update(['verified_status' => 1]);
     // ye session company-info waly page ko access krny ky liye hai
     session(['otpverified'=>true]);
     // yahan hum ny verify-otp ko access krny ky liye jo session bnaya usko khtm krdiya hai taky dobara sy ye page access na kiya ja saky
@@ -99,7 +101,7 @@ class login extends Controller
 
     public function resendotpgmail(Request $request){
     $userid = session('registered_user_id');
-    $user = DB::table('credentials')->where('id',$userid)->first();
+    $user = credential::where('id',$userid)->first();
     if(!$user){
     return redirect('registration');
     }
@@ -108,7 +110,7 @@ class login extends Controller
     }
     $otp = rand(100000,999999);
     $newotpexpiry = now()->addMinutes(1);
-    DB::table('credentials')->where('id',$userid)->update(['otp'=>$otp,'otp_expires_at'=>$newotpexpiry]);
+    credential::where('id',$userid)->update(['otp'=>$otp,'otp_expires_at'=>$newotpexpiry]);
     Mail::to($user->email)->send(new emailotpverify($otp));
     return back();
     }
@@ -123,7 +125,7 @@ class login extends Controller
     if(Firebase::auth()->verifyIdToken($request->firebase_token)){
     $otp = $request->otp;
     $userid = session('registered_user_id');
-    DB::table('credentials')->where("id",$userid)->update(['verified_status' => 1,'otp'=> $otp]);
+    credential::where("id",$userid)->update(['verified_status' => 1,'otp'=> $otp]);
     session(['otpverified'=>true]);
     return response()->json(['success'=>true]);
     }
@@ -145,7 +147,7 @@ class login extends Controller
     ]);
 
     $userid = session('registered_user_id');
-    $companyinfo = DB::table('company_info')->insert([
+    $companyinfo = company_info::create([
     'company_name'=>$request->company,
     'user_id'=>$userid,
     'owner_name'=>$request->owner,
@@ -153,7 +155,7 @@ class login extends Controller
     'email'=>$request->email,
     'address'=>$request->address,
     ]);
-    DB::table('credentials')->where('id',$userid)->update(['registration_completed' => 1]);
+    credential::where('id',$userid)->update(['registration_completed' => 1]);
     if($companyinfo){
     session()->forget('otpverified');
     session()->forget('registered_user_id');
