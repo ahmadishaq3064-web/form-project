@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\user;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class FormController extends Controller
@@ -22,7 +22,7 @@ class FormController extends Controller
             'salary' => 'required',
         ]);
         // Insert the new user into the database
-        $id = DB::table('users')->insert([
+        $id = user::create([
             'name' => $req->name,
             'email' => $req->email,
             'age' => $req->age,
@@ -54,16 +54,16 @@ class FormController extends Controller
 
     public function averageage(){
     // Get all existing users from the database
-    $averageage = DB::table('users')->where('created_by',Auth::id())->avg('age');
-    $maleusers = DB::table('users')->where('created_by',Auth::id())->where('gender', 'Male')->count();
-    $femaleusers = DB::table('users')->where('created_by',Auth::id())->where('gender', 'Female')->count();
-    $totalusers = DB::table('users')->where('created_by',Auth::id())->count('id');
+    $averageage = user::where('created_by',Auth::id())->avg('age');
+    $maleusers = user::where('created_by',Auth::id())->where('gender', 'Male')->count();
+    $femaleusers = user::where('created_by',Auth::id())->where('gender', 'Female')->count();
+    $totalusers = user::where('created_by',Auth::id())->count('id');
     return view('dashboard', ['averageage' => $averageage , 'maleusers' => $maleusers , 'femaleusers' => $femaleusers, 'totalusers'=> $totalusers ]);
     }
 
     public function search(Request $request){
     // withQueryString() is liye use hota hai , jab b hum search kr ky pagination py click kren to ye search ky heesab sy page badly .. na ky pury user dobara show krny lag jay ..
-    $searchdata = DB::table('users')->where('created_by',Auth::id())->where('name','like',"%{$request->search}%")->paginate(5)->withQueryString();
+    $searchdata = user::where('created_by',Auth::id())->where('name','like',"%{$request->search}%")->paginate(5)->withQueryString();
     // get the data from the current pagination page
     $collection = $searchdata->getcollection();
     if($request->sort == 'asc'){
