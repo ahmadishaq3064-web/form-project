@@ -15,6 +15,8 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class login extends Controller
 {
+
+
     public function registration(Request $request){
     $request->validate([
     'profile_photo'=> 'required|image|max:3000',
@@ -26,7 +28,6 @@ class login extends Controller
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     'password_confirmation' => 'required|same:password'
     ]);
-
     $otp_expires_at = now()->addMinutes(1);
     // yahan py hum ny country code or phone number ko merge kiya hai
     $phone = $request->phone[0] . $request->phone[1];
@@ -67,10 +68,16 @@ class login extends Controller
     }
     }
 
+
+
+
     public function phonecode(){
     $response = Http::get('https://countries.dev/countries?fields=name,alpha2Code,callingCodes&sort=name');
     return response()->json($response->json());
     }
+
+
+
 
     public function verifyotpgmail(Request $request){
     $request->validate([
@@ -99,6 +106,9 @@ class login extends Controller
     return back()->withErrors([ 'otp' => 'Invalid OTP.']);
     }
 
+
+
+
     public function resendotpgmail(Request $request){
     $userid = session('registered_user_id');
     $user = credential::where('id',$userid)->first();
@@ -114,6 +124,9 @@ class login extends Controller
     Mail::to($user->email)->send(new emailotpverify($otp));
     return back();
     }
+
+
+
 
     public function verifyotpsms(Request $request){
     $request->validate([
@@ -134,6 +147,8 @@ class login extends Controller
     }
 
 
+
+
     public function companyinfo(Request $request){
     $request->validate([
     'company'=>'required|regex:/^[a-zA-Z &#,.-]+$/|between:3,30',
@@ -144,7 +159,6 @@ class login extends Controller
     'email'=>'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'address'=>'required|regex:/^[a-zA-Z #,.-]+$/|between:20,120'
     ]);
-
     $userid = session('registered_user_id');
     $companyinfo = company_info::create([
     'company_name'=>$request->company,
@@ -162,19 +176,20 @@ class login extends Controller
     }
     }
 
+
+
+
     public function login(Request $request){
     $request->validate([
     'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
     'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/',
     ]);
-
     $credentials = [
     'email' => $request->email,
     'password' => $request->password,
+    'verified_status' => 1,
     'registration_completed' => 1,
     ];
-
-
     if(Auth::attempt($credentials)){
     return redirect("dashboard");
     }else {
@@ -182,6 +197,29 @@ class login extends Controller
     return redirect("login")->withErrors(['password' => 'The email or password is incorrect.'])->withInput();
     }
     }
+
+
+    public function apilogin(Request $request){
+    $request->validate([
+    'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+    'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/', 
+    ]);
+    $user = credential::where('email',$request->email)->where(['registration_completed' => 1])->where(['verified_status' => 1])->first();
+    if (!$user || !Hash::check($request->password, $user->password)) {
+    return response()->json([
+    'success' => false,
+    'message' => 'Invalid login details or registration incomplete.'
+    ], 401);
+    }
+    $token = $user->createToken('api_token')->plainTextToken;
+    return response()->json([
+    'status' => true,
+    'token' => $token,
+    'token_type' => 'Bearer'
+    ]);
+    }
+
+
 
     public function logout(){
     Auth::logout();

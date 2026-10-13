@@ -323,7 +323,7 @@ Add-Users
             // Send form data to Laravel using AJAX
             $.ajax({
 
-                url: "/api/user-data",
+                url: "{{ url('user-data') }}",
 
                 type: "POST",
 
