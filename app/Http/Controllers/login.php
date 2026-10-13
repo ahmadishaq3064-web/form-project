@@ -119,7 +119,6 @@ class login extends Controller
     $request->validate([
     'firebase_token' => 'required',
     'otp' => 'required|digits:6',
-    
     ]);
     try{
     if(Firebase::auth()->verifyIdToken($request->firebase_token)){

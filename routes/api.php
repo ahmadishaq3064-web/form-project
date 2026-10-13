@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\FormController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('isuservalid','inactivelogout','preventbackbutton')->group(function(){
+// Receive the AJAX form submission
+Route::post('user-data', [FormController::class, 'add']);
+// shows countries in dropdown using laravel and cache storage
+Route::get('countries',[FormController::class,'countries']);
+// Display the form/user-data blade
+Route::get('user-data', function(){return view('user-data');});
 });

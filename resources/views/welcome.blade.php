@@ -83,7 +83,7 @@
     $('.popupcookie').hide();
     }
     $('.acceptcookie').click(function(){
-    document.cookie = "cookie_consent=accepted; max-age=10; path=/";
+    document.cookie = "cookie_consent=accepted; max-age=600; path=/";
     $('.popupcookie').hide();
     })
     $('.rejectcookie').click(function(){

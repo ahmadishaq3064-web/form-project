@@ -31,7 +31,7 @@
         <!-- Navigation -->
         <nav class="sidebar">
             <a href="{{ url('dashboard') }}" class="nav-button {{ request()->is('dashboard') ? 'active' : ''}}">Dashboard</a>
-            <a href="{{ url('user-data') }}" class="nav-button {{ request()->is('user-data') ? 'active' : ''}}">Add User</a>
+            <a href="{{ url('/api/user-data') }}" class="nav-button {{ request()->is('/api/user-data') ? 'active' : ''}}">Add User</a>
             <a href="{{ url('view-data') }}" class="nav-button {{ request()->is('view-data') ? 'active' : ''}}">View Users</a>
             <hr style="border: 2px solid rgb(1, 1, 1);">
             <form action="{{ url('logout') }}" method="POST">

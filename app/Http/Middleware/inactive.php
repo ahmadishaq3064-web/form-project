@@ -17,7 +17,7 @@ class inactive
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check()){
-        $timeout = 600;
+        $timeout = 3600;
         $last_activity = session('last_activity');
         if($last_activity && time() - $last_activity > $timeout){
         Auth::logout();
