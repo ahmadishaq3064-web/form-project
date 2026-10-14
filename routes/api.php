@@ -19,5 +19,5 @@ Route::post('login',[login::class,'apilogin']);
 
 Route::middleware("auth:sanctum")->group(function(){
 Route::post('user-data',[FormController::class,'add']);
-Route::get('view-data',[FormController::class,'search']);
+Route::get('view-data',[FormController::class,'dataforapi']);
 });

@@ -138,8 +138,9 @@ View-Users
 
 
     // to reset search and sort value
-    $("#reset").click(function(e){
+    $("#reset").click(async function(e){
     e.preventDefault();
+    await caches.delete('users-data');
     // clear the inputs from the screen
     $("#search").val("");
     $("#sort").val("Select Option");

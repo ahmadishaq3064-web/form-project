@@ -86,10 +86,12 @@ class FormController extends Controller
     }
     // take the sorted data , put them back in pagination result , and reset their index values
     $searchdata->setcollection($collection->values());
-    if($request->expectsJson()){
-    return response()->json(['data' => $searchdata,'recentsearch' => $request->search ]);
-    }
     return view('view-data',['data' => $searchdata,'recentsearch' => $request->search ]);
+    }
+
+    public function dataforapi(){
+    $data = user::all();
+    return response()->json(['userdata' => $data]);
     }
 
 }
