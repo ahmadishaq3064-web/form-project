@@ -28,9 +28,9 @@ View-Users
 
 <!-- User table -->
 <div class="table-container">
-    <table class="table" id="usertable">
+    <table class="user-data-table" id="usertable">
 
-        <thead class="table-dark">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>

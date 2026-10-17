@@ -314,20 +314,56 @@ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 Dashboard Table
 ------------------------------ */
 
-table {
-width: 100%;
-border-collapse: collapse;
+.user-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    text-align: left;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-th,
-td {
-border: 1px solid #ddd;
-padding: 12px;
-text-align: left;
+/* Table header */
+.user-data-table thead th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 14px 16px;
+    font-weight: 600;
+    border: 1px solid #34495e;
 }
 
-th {
-background-color: #f5f5f5;
+/* Table cells */
+.user-data-table td {
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    color: #333333;
+}
+
+/* Alternate row colors */
+.user-data-table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Hover effect */
+.user-data-table tbody tr:hover {
+    background-color: #eaf2f8;
+    transition: background-color 0.2s ease;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .user-data-table {
+        font-size: 13px;
+    }
+
+    .user-data-table thead th,
+    .user-data-table td {
+        padding: 8px;
+    }
 }
 
 
