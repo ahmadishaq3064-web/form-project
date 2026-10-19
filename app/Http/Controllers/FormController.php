@@ -38,6 +38,9 @@ class FormController extends Controller
         'message' => 'Data Added Successfully..',
        ]);
     }
+
+
+    
     // Display the form, countries
     public function countries()
     {
