@@ -9,6 +9,7 @@ use App\Http\Middleware\validuser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->alias([
+        // passport API ky liye hai 
+        'client' => CheckClientCredentials::class,
         'isuservalid' => validuser::class,
         'registrationcompleted' => registrationcompleted::class,
         'verificationstep' => otppending::class,

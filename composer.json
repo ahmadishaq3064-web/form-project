@@ -9,7 +9,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "kreait/laravel-firebase": "6.2",
         "laravel/framework": "^11.0",
-        "laravel/passport": "*",
+        "laravel/passport": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "twilio/sdk": "^8.12"
@@ -60,7 +60,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         },
         "policy": {
             "advisories": {
