@@ -97,4 +97,15 @@ class FormController extends Controller
     return response()->json(['userdata' => $data]);
     }
 
+    public function addition(Request $request){
+    $request->validate([
+    'first_value' => 'required|numeric',
+    'second_value' => 'required|numeric',
+    ]);
+    $answer = $request->first_value + $request->second_value;
+    return response()->json([
+    'answer' => $answer,
+    ]);
+    }
+
 }

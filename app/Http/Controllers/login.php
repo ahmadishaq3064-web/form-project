@@ -198,26 +198,26 @@ class login extends Controller
     }
     }
 
-
-    public function apilogin(Request $request){
-    $request->validate([
-    'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
-    'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/', 
-    ]);
-    $user = credential::where('email',$request->email)->where(['registration_completed' => 1])->where(['verified_status' => 1])->first();
-    if (!$user || !Hash::check($request->password, $user->password)) {
-    return response()->json([
-    'success' => false,
-    'message' => 'Invalid login details or registration incomplete.'
-    ], 401);
-    }
-    $token = $user->createToken('api_token')->plainTextToken;
-    return response()->json([
-    'status' => true,
-    'token' => $token,
-    'token_type' => 'Bearer'
-    ]);
-    }
+    // Sanctum api package ko use kr ky login krny aur token get krny ka tareeqa hai ye 
+    // public function apilogin(Request $request){
+    // $request->validate([
+    // 'email'=> 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+    // 'password'=> 'required|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/', 
+    // ]);
+    // $user = credential::where('email',$request->email)->where(['registration_completed' => 1])->where(['verified_status' => 1])->first();
+    // if (!$user || !Hash::check($request->password, $user->password)) {
+    // return response()->json([
+    // 'success' => false,
+    // 'message' => 'Invalid login details or registration incomplete.'
+    // ], 401);
+    // }
+    // $token = $user->createToken('api_token')->plainTextToken;
+    // return response()->json([
+    // 'status' => true,
+    // 'token' => $token,
+    // 'token_type' => 'Bearer'
+    // ]);
+    // }
 
 
 

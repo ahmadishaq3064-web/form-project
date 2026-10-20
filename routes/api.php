@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login',[login::class,'apilogin']);
 
-Route::middleware("auth:sanctum")->group(function(){
-Route::post('user-data',[FormController::class,'add']);
+
+Route::middleware("client")->group(function(){
 Route::get('view-data',[FormController::class,'dataforapi']);
+Route::post('addition',[FormController::class,'addition']);
 });
