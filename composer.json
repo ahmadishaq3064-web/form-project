@@ -12,6 +12,7 @@
         "laravel/passport": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "smalot/pdfparser": "^2.13",
         "twilio/sdk": "^8.12"
     },
 "require-dev": {

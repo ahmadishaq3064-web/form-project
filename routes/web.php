@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\extractpdfcontroller;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\login;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,9 @@ Route::get('user-data', function(){return view('user-data');});
 Route::get('view-data',[FormController::class,'search']);
 // logout
 Route::post('logout',[login::class,'logout']);
+// Display the extract pdf view
+Route::get('extract-pdf',function(){return view('extract-pdf');});
+Route::post('extract-pdf',[extractpdfcontroller::class,'extractpdf']);
 });
 
 

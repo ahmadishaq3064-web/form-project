@@ -93,7 +93,7 @@ class FormController extends Controller
     }
 
     public function dataforapi(){
-    $data = user::select('id','name','age','gender','created_by')->get();
+    $data = user::select('id','name','age','gender','salary')->get();
     return response()->json(['userdata' => $data]);
     }
 
