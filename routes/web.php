@@ -59,6 +59,7 @@ Route::post('logout',[login::class,'logout']);
 // Display the extract pdf view
 Route::get('extract-pdf',function(){return view('extract-pdf');});
 Route::post('extract-pdf',[extractpdfcontroller::class,'extractpdf']);
+
 });
 
 

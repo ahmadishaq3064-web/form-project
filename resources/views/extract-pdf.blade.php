@@ -35,7 +35,7 @@ Extract-PDF
             
             <!-- Submit button -->
             <div class="input-nine">
-                <input class="form-control" type="submit" name="extract" value="Extract">
+                <input class="form-control" type="submit" name="extract" value="Get Excel File">
             </div>
 
         </form>
