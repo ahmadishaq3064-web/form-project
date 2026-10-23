@@ -12,7 +12,7 @@ class dataexport implements FromArray , WithHeadings
     $this->students = $students; 
     }
     public function headings():array{
-    return ['Roll Number','Name','Age'];
+    return ['Roll Number','Student Name','Email Address','Age','Total','Obtained','Percentage'];
     }
     public function array():array{
     return $this->students;

@@ -26,7 +26,7 @@ Extract-PDF
             <!-- Name -->
             <div class="input-one form-group">
                 <label>Select a file:</label>
-                <input class="form-control" type="file" name="extract">
+                <input class="form-control" type="file" name="extract[]" required multiple>
                 @error('extract')
                 <span class = "text-danger"><small>{{ $message }}</small></span>
                 @enderror
