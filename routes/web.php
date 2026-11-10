@@ -2,6 +2,7 @@
 use App\Http\Controllers\extractpdfcontroller;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\login;
+use App\Http\Controllers\pdfcontroller;
 use Illuminate\Support\Facades\Route;
 /*
 
@@ -59,6 +60,8 @@ Route::post('logout',[login::class,'logout']);
 // Display the extract pdf view
 Route::get('extract-pdf',function(){return view('extract-pdf');});
 Route::post('extract-pdf',[extractpdfcontroller::class,'extractpdf']);
+// create pdf
+Route::get('pdf/{id}',[pdfcontroller::class,'createpdf']);
 
 });
 

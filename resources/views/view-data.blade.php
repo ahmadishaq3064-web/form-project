@@ -41,6 +41,7 @@ View-Users
                 <th>Gender</th>
                 <th>Color</th>
                 <th>Salary</th>
+                <th>PDF</th>
             </tr>
         </thead>
 
@@ -59,6 +60,7 @@ View-Users
                     <td>{{ $user->gender }}</td>
                     <td>{{ $user->color }}</td>
                     <td>{{ $user->salary }}</td>
+                    <td><a class="pdf" href="{{ url('pdf/'.$user->id) }}"><button>Download PDF</button></a></td>
                 </tr>
 
             @endforeach

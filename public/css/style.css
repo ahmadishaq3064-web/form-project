@@ -278,6 +278,15 @@ transition: 0.2s;
 background-color: #0b5ed7;
 }
 
+.pdf button{
+padding: 5px;
+text-decoration: none;
+}
+
+.pdf button:hover{
+background-color:  rgba(0, 0, 0, 0.268);
+transition: background-color 0.3s ease;
+}
 
 /* ------------------------------
 Success Overlay
